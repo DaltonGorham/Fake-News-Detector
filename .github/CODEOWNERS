@@ -1,0 +1,4 @@
+# This CODEOWNERS file ensures that every pull request
+# requires review from all team members before merging.
+
+* @DaltonGorham @JacksonRudnick @Ethan0754 
