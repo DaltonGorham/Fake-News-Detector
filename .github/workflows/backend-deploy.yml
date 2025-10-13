@@ -14,17 +14,20 @@ on:
       - 'backend/**'
 
 jobs:
-  deploy:
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment: production-backend
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Trigger Render Deploy (Production)
-        if: github.ref == 'refs/heads/main'
+      - name: Trigger Render Deploy
         run: curl -X POST "${{ secrets.RENDER_PROD_HOOK }}"
 
-      - name: Trigger Render Deploy (Development)
-        if: github.ref != 'refs/heads/main'
+  deploy-development:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: develop-backend
+
+    steps:
+      - name: Trigger Render Deploy
         run: curl -X POST "${{ secrets.RENDER_DEV_HOOK }}"
