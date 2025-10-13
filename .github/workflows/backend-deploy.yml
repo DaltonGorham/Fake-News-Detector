@@ -1,0 +1,30 @@
+name: Deploy Backend to Render
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches:
+      - develop      
+    paths:
+      - 'backend/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deploy
+        run: |
+          if [ "${GITHUB_REF_NAME}" == "main" ]; then
+            curl -X POST "${{ secrets.RENDER_PROD_HOOK }}"
+          else
+            curl -X POST "${{ secrets.RENDER_DEV_HOOK }}"
+          fi
