@@ -78,14 +78,42 @@ def fetch_user(id: int) -> User:
 ```
 
 ## Branching & Git
-* main -> release branch
-* feature/ -> for individual features
-* fix/ -> for bug fixes
-* PR's -> Requires at leat 1 approval
-* Use conventional commits:
+- We use a two-branch workflow for development and production:
+- main → Production-ready branch
+- develop → Integration branch for completed features
+
+### Workflow 
+1. Create a feature branch from develop:
+```
+git checkout develop
+git pull origin develop
+git checkout -b feature/your-feature-name
+```
+2. Once the feature is complete, open a *Pull Request* into develop.
+3. After testing and validation, develop is merged into main for a release.
+
+### Branch Naming Conventions:
+- `feature/<name>` → new features
+- `bugfix/<name>` → bug fixes
+- `refactor/<name>` → refactoring existing code
+
+### Use conventional commits:
 ```
 feat: add login button
 fix: resolve API timeout issue
 refactor: improve user service structure
 ```
+
+
+### GitHub Actions Overview
+
+This repository includes automated CI/CD pipelines under .github/workflows/:
+
+`deploy-frontend.yml`
+
+Triggers on merges to develop that modify the frontend/ directory.
+
+Builds the Vite project and deploys to Vercel.
+
+Production deployments occur only on merges to main.
 
