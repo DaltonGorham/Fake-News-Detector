@@ -21,10 +21,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Trigger Render Deploy
-        run: |
-          if [ "${GITHUB_REF_NAME}" == "main" ]; then
-            curl -X POST "${{ secrets.RENDER_PROD_HOOK }}"
-          else
-            curl -X POST "${{ secrets.RENDER_DEV_HOOK }}"
-          fi
+      - name: Trigger Render Deploy (Production)
+        if: github.ref == 'refs/heads/main'
+        run: curl -X POST "${{ secrets.RENDER_PROD_HOOK }}"
+
+      - name: Trigger Render Deploy (Development)
+        if: github.ref != 'refs/heads/main'
+        run: curl -X POST "${{ secrets.RENDER_DEV_HOOK }}"
