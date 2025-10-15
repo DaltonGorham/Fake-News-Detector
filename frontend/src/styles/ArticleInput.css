@@ -1,0 +1,79 @@
+.article-input-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.article-input-content {
+  width: 100%;
+  max-width: 500px;
+}
+
+.article-input-label {
+  display: block;
+  color: #e1e8ed;
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.article-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.article-url-input {
+  width: 100%;
+  background: rgba(30, 39, 50, 0.6);
+  border: 1px solid rgba(56, 68, 77, 0.8);
+  border-radius: 8px;
+  padding: 14px 50px 14px 16px;
+  color: #e1e8ed;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.article-url-input:focus {
+  border-color: rgba(76, 110, 245, 0.5);
+  background: rgba(30, 39, 50, 0.8);
+  box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.1);
+}
+
+.article-url-input::placeholder {
+  color: rgba(136, 153, 166, 0.5);
+}
+
+.article-submit-button {
+  position: absolute;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  background: rgba(76, 110, 245, 0.15);
+  border: none;
+  border-radius: 6px;
+  color: #4c6ef5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.article-submit-button:hover {
+  background: rgba(76, 110, 245, 0.25);
+  transform: translateX(2px);
+}
+
+.article-submit-button:active {
+  transform: translateX(4px);
+}
+
+.article-submit-button svg {
+  width: 18px;
+  height: 18px;
+}

@@ -14,7 +14,7 @@ export default function LoginPage() {
   const handleLogin = async () => {
     const { error } = await login(email, password);
     if (!error) {
-      navigate('/');
+      navigate('/dashboard');
     }
   };
 
@@ -31,7 +31,7 @@ export default function LoginPage() {
         <img src="/logo.png" id="logo" alt="Fake-News Logo" />
       </div>
       <div id="login-box">
-        <h1>Login</h1>
+        <h1 className="login-title">Login</h1>
         <input
           id="email"
           placeholder="Email"
