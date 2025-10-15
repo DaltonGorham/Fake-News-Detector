@@ -6,12 +6,12 @@ export function useAuth() {
 
   const login = async (email, password) => {
     if (!email) {
-      setStatus('Email is required for signup.');
+      setStatus('Email is required to login');
       return { error: new Error('Email is required') };
     }
 
     if (!password){
-      setStatus('Password is required for signup.');
+      setStatus('Password is required to login.');
       return { error: new Error('Password is required') };
     }
 
