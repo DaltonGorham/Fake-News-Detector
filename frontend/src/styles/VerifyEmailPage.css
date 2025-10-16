@@ -1,0 +1,30 @@
+.verify-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #0f1419, #1a1f2e);
+}
+
+.verify-content {
+  background: rgba(32, 33, 35, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.verify-content h2 {
+  color: #e1e8ed;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.verify-content p {
+  color: #a0aec0;
+  font-size: 14px;
+  line-height: 1.6;
+}

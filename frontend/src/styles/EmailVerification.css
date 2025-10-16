@@ -1,0 +1,111 @@
+.email-verification-container {
+  text-align: center;
+  color: #e1e8ed;
+  padding: 15px;
+}
+
+.verification-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.verification-content h2 {
+  font-size: 28px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.verification-message {
+  margin: 24px 0;
+}
+
+.verification-message p {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.email-highlight {
+  display: block;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px;
+  margin: 12px 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  word-break: break-all;
+}
+
+.verification-instructions {
+  margin: 24px 0;
+}
+
+.verification-instructions p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.secondary-text {
+  color: #a0aec0;
+  font-size: 14px;
+}
+
+.verification-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.resend-status {
+  color: #d1d5db;
+  font-size: 14px;
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: rgba(32, 33, 35, 0.5);
+}
+
+.resend-btn {
+  width: 100%;
+  padding: 12px 0;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.resend-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.resend-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.back-btn {
+  width: 100%;
+  padding: 12px 0;
+  background: #2d3748;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: #3a4659;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px) scale(1.03);
+}
