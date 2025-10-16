@@ -1,5 +1,5 @@
-import ArticleInput from '../components/ArticleInput';
-import Sidebar from '../components/Sidebar';
+import ArticleInput from '../components/layout/ArticleInput';
+import Sidebar from '../components/layout/Sidebar';
 import '../styles/MainPage.css';
 
 export default function MainPage() {

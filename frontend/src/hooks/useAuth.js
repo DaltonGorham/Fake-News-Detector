@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { validateEmail, validatePassword, validateUsername } from '../util/validator.js';
-import { getRedirectURL } from '../util/auth.js';
+import { getRedirectURL, formatAuthError } from '../util/authUtils.js';
 
 export function useAuth() {
   const [status, setStatus] = useState('');
   const [pendingEmailVerification, setPendingEmailVerification] = useState(null);
 
   const handleError = (error, prefix = '') => {
-    const message = error?.message || 'An unexpected error occurred';
+    const message = formatAuthError(error);
     setStatus(`${prefix}${message}`);
     return { error };
   };

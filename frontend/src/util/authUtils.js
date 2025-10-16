@@ -8,3 +8,7 @@ export const getRedirectURL = () => {
   url = url.endsWith('/') ? url : `${url}/`
   return url
 }
+
+export const formatAuthError = (error) => {
+  return error?.message || 'An unexpected error occurred'
+}

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
-import SignupModal from '../components/SignupModal';
-import EmailVerification from '../components/EmailVerification';
+import SignupModal from '../components/auth/SignupModal';
+import EmailVerification from '../components/auth/EmailVerification';
 import { useAuth } from '../hooks/useAuth';
 import '../styles/LoginPage.css';
 

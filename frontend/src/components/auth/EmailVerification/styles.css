@@ -105,7 +105,5 @@
 }
 
 .back-btn:hover {
-  background: #3a4659;
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px) scale(1.03);
+  background: #3a4a61;
 }

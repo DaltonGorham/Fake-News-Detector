@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/EmailVerification.css';
+import './styles.css';
 
 export default function EmailVerification({ email, onBack, onResend }) {
   const [isResending, setIsResending] = useState(false);

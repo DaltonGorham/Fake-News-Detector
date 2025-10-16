@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
-import '../styles/ArticleInput.css';
+import React from 'react';
+import { useArticleSubmission } from '../../../hooks/article/useArticleSubmission';
+import './styles.css';
 
 export default function ArticleInput() {
-  const [url, setUrl] = useState('');
-
-  const handleSubmit = () => {
-    if (url.trim()) {
-      console.log('Submitted URL:', url);
-      // we will add functionality here later
-    }
-  };
+  const { url, setUrl, handleSubmit } = useArticleSubmission();
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {

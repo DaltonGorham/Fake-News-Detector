@@ -4,7 +4,7 @@ import { supabase } from "./lib/supabaseClient.js";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
-import './styles/Loading.css';
+import Loading from "./components/common/Loading";
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -49,11 +49,7 @@ function AppRoutes() {
     for a smoother experience
   */
   if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner">Loading...</div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

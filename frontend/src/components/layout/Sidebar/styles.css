@@ -55,7 +55,6 @@
   font-size: 14px;
 }
 
-
 .new-article-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
@@ -98,10 +97,11 @@
 .user-avatar {
   width: 24px;
   height: 24px;
-  background-color: #4c6ef5;
+  background: #4c6ef5;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
+  font-size: 14px;
 }
