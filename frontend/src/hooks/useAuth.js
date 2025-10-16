@@ -1,58 +1,109 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
+import { validateEmail, validatePassword, validateUsername } from '../util/validator.js';
+import { getRedirectURL, formatAuthError } from '../util/authUtils.js';
 
 export function useAuth() {
-  const [status, setStatus] = useState(''); // surely we can seperate these field checking inside a util dir or something, this aint it lazy
+  const [status, setStatus] = useState('');
+  const [pendingEmailVerification, setPendingEmailVerification] = useState(null);
+
+  const handleError = (error, prefix = '') => {
+    const message = formatAuthError(error);
+    setStatus(`${prefix}${message}`);
+    return { error };
+  };
 
   const login = async (email, password) => {
-    if (!email) {
-      setStatus('Email is required for signup.');
-      return { error: new Error('Email is required') };
-    }
+    try {
+      validateEmail(email);
+      validatePassword(password);
 
-    if (!password){
-      setStatus('Password is required for signup.');
-      return { error: new Error('Password is required') };
-    }
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+        options: {
+          redirectTo: getRedirectURL()
+        }
+      });
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setStatus(error ? `Login failed: ${error.message}` : 'Login successful!');
-    return { error };
+      if (error) {
+        return handleError(error, 'Login failed: ');
+      }
+
+      if (!data.user?.confirmed_at) {
+        setPendingEmailVerification(email);
+        setStatus('Please confirm your email before logging in.');
+        return { error: new Error('Email not confirmed') };
+      }
+
+      setStatus('Login successful!');
+      return { data, error: null };
+    } catch (err) {
+      return handleError(err);
+    }
   };
 
   const signup = async (email, password, username) => {
-     if (!username) {
-      setStatus('Username is required for signup.');
-      return { error: new Error('Username is required') };
-    }
-    
-    if (!email) {
-      setStatus('Email is required for signup.');
-      return { error: new Error('Email is required') };
-    }
-    
-    if (!password) {
-      setStatus('Password is required for signup.');
-      return { error: new Error('Password is required') };
-    }
+    try {
+      validateUsername(username);
+      validateEmail(email);
+      validatePassword(password);
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    
-    setStatus(error ? `Signup failed: ${error.message}` : 'Signup successful!');
-    return { error };
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { username },
+          emailRedirectTo: `${window.location.origin}/verify`,
+        }
+      });
+
+      if (error) {
+        return handleError(error, 'Signup failed: ');
+      }
+
+      setPendingEmailVerification(email);
+      setStatus('')
+      return { data, error: null };
+    } catch (err) {
+      return handleError(err);
+    }
+  };
+
+  const resendVerificationEmail = async (email) => {
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+        options: { redirectTo: `${window.location.origin}/verify` }
+      });
+      return { error };
+    } catch (error) {
+      return { error };
+    }
   };
 
   const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    setStatus(error ? `Logout failed: ${error.message}` : 'Logout successful!');
-    return { error };
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        return handleError(error, 'Logout failed: ');
+      }
+      setStatus('Logout successful!');
+      return { error: null };
+    } catch (err) {
+      return handleError(err);
+    }
   };
 
   return {
     login,
     signup,
     logout,
+    resendVerificationEmail,
     status,
-    setStatus
+    setStatus,
+    pendingEmailVerification,
+    setPendingEmailVerification
   };
 }

@@ -1,0 +1,13 @@
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #0f1419, #1a1f2e);
+}
+
+.loading-spinner {
+  color: #e1e8ed;
+  font-size: 18px;
+  font-weight: 500;
+}
