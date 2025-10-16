@@ -1,45 +1,50 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
+import { validateEmail, validatePassword, validateUsername } from '../util/validator.js';
+import { getRedirectURL } from '../util/auth.js';
 
 export function useAuth() {
-  const [status, setStatus] = useState(''); // surely we can seperate these field checking inside a util dir or something, this aint it lazy
+  const [status, setStatus] = useState('');
 
   const login = async (email, password) => {
-    if (!email) {
-      setStatus('Email is required to login');
-      return { error: new Error('Email is required') };
-    }
+    try {
+      validateEmail(email);
+      validatePassword(password);
 
-    if (!password){
-      setStatus('Password is required to login.');
-      return { error: new Error('Password is required') };
-    }
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      }, {
+        redirectTo: getRedirectURL(),
+      });
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setStatus(error ? `Login failed: ${error.message}` : 'Login successful!');
-    return { error };
+      setStatus(error ? `Login failed: ${error.message}` : 'Login successful!');
+      return { error };
+    } catch (err) {
+      setStatus(err.message);
+      return { error: err };
+    }
   };
 
   const signup = async (email, password, username) => {
-     if (!username) {
-      setStatus('Username is required for signup.');
-      return { error: new Error('Username is required') };
-    }
-    
-    if (!email) {
-      setStatus('Email is required for signup.');
-      return { error: new Error('Email is required') };
-    }
-    
-    if (!password) {
-      setStatus('Password is required for signup.');
-      return { error: new Error('Password is required') };
-    }
+    try {
+      validateUsername(username);
+      validateEmail(email);
+      validatePassword(password);
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    
-    setStatus(error ? `Signup failed: ${error.message}` : 'Signup successful!');
-    return { error };
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      }, {
+        redirectTo: getRedirectURL(),
+      });
+
+      setStatus(error ? `Signup failed: ${error.message}` : 'Signup successful!');
+      return { error };
+    } catch (err) {
+      setStatus(err.message);
+      return { error: err };
+    }
   };
 
   const logout = async () => {
@@ -53,6 +58,6 @@ export function useAuth() {
     signup,
     logout,
     status,
-    setStatus
+    setStatus,
   };
 }
