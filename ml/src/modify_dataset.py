@@ -1,7 +1,8 @@
 import os
+import kagglehub
 import pandas as pd
 
-if os.path.exists('../data/Fake.csv') and os.path.exists('../data/True.csv'):
+def modify_dataset():
     df_fake = pd.read_csv('../data/Fake.csv')
     df_true = pd.read_csv('../data/True.csv')
 
@@ -24,6 +25,16 @@ if os.path.exists('../data/Fake.csv') and os.path.exists('../data/True.csv'):
     df = df.sample(frac=1).reset_index(drop=True)  # Shuffle the dataset
     df.to_csv('../data/combined_news.csv', index=False)
     print("Combined dataset saved to '../data/combined_news.csv'")
-else:
-    print("Source datasets not found. Please ensure 'Fake.csv' and 'True.csv' are in the '../data/' directory.")
-    print("Contact Jackson, this shouldn't ever happen.")
+
+def download_dataset():
+    path = kagglehub.download_dataset('clmentbisaillon/fake-and-real-news-dataset')
+    os.mkdir('../data')
+    for file in os.listdir(path):
+        os.rename(os.path.join(path, file), os.path.join('../data', file))
+    os.rmdir(path)
+    print("Datasets downloaded and saved to '../data' directory.")
+
+if __name__ == "__main__":
+    if not os.path.exists('../data/Fake.csv') and not os.path.exists('../data/True.csv'):
+        download_dataset()
+    modify_dataset()
