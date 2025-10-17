@@ -11,7 +11,7 @@ const getAuthHeader = async () => {
   return null;
 };
 
-const apiClient = async (endpoint, options = {}) => {
+export const apiClient = async (endpoint, options = {}) => {
   try {
     
     const headers = {
@@ -51,5 +51,3 @@ const apiClient = async (endpoint, options = {}) => {
     return { data: null, error: error.message };
   }
 };
-
-export default apiClient;

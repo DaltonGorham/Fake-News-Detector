@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { validateEmail, validatePassword, validateUsername } from '../util/validator.js';
 import { getRedirectURL, formatAuthError } from '../util/authUtils.js';
@@ -6,6 +6,24 @@ import { getRedirectURL, formatAuthError } from '../util/authUtils.js';
 export function useAuth() {
   const [status, setStatus] = useState('');
   const [pendingEmailVerification, setPendingEmailVerification] = useState(null);
+  const [user, setUser] = useState(null);
+
+    // TODO: Replace with backend API endpoint /api/users/config to fetch user data
+    // goes in api/user.js
+    // - Should accept query params for requested fields (username, avatar_url, etc)
+    // - Replace direct Supabase query with API call
+    // - Update components to use new endpoint
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleError = (error, prefix = '') => {
     const message = formatAuthError(error);
@@ -97,6 +115,7 @@ export function useAuth() {
   };
 
   return {
+    user,
     login,
     signup,
     logout,

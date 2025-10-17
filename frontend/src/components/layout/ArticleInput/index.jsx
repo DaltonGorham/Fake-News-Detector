@@ -1,5 +1,6 @@
 import React from 'react';
 import { useArticleSubmission } from '../../../hooks/article/useArticleSubmission';
+import { HiArrowRight } from 'react-icons/hi';
 import './styles.css';
 
 export default function ArticleInput() {
@@ -33,18 +34,7 @@ export default function ArticleInput() {
             onClick={handleSubmit}
             aria-label="Submit URL"
           >
-            <svg 
-              width="20" 
-              height="20" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2"
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            <HiArrowRight size={20} />
           </button>
         </div>
       </div>
