@@ -27,14 +27,17 @@ def modify_dataset():
     print("Combined dataset saved to '../data/combined_news.csv'")
 
 def download_dataset():
-    path = kagglehub.download_dataset('clmentbisaillon/fake-and-real-news-dataset')
+    path = kagglehub.dataset_download('clmentbisaillon/fake-and-real-news-dataset')
     os.mkdir('../data')
     for file in os.listdir(path):
         os.rename(os.path.join(path, file), os.path.join('../data', file))
     os.rmdir(path)
     print("Datasets downloaded and saved to '../data' directory.")
 
-if __name__ == "__main__":
+def main():
     if not os.path.exists('../data/Fake.csv') and not os.path.exists('../data/True.csv'):
         download_dataset()
     modify_dataset()
+
+if __name__ == "__main__":
+    main()

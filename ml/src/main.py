@@ -10,55 +10,144 @@ Dataset is modified to remove unneeded columns and add a label column
 
 import os
 import pandas as pd
+import pickle
+
 from sklearn.model_selection import train_test_split
-from transformers import DistilBertTokenizer, DistilBertForSequenceClassification, Trainer, TrainingArguments
+from sklearn.metrics import classification_report
 
-df = pd.DataFrame()
+from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 
-if os.path.exists('../data/combined_news.csv'):
+from sklearn.feature_extraction.text import TfidfVectorizer
+from transformers import DistilBertTokenizer
+
+import modify_dataset
+
+def read_data():
+    if not os.path.exists('../data/combined_news.csv'):
+        modify_dataset.main()
     df = pd.read_csv('../data/combined_news.csv')
-else:
-    print("Dataset not found. Please run 'modify_dataset.py' to create the combined dataset.")
+    return df
 
-train_df, temp_df = train_test_split(df, test_size=0.3, random_state=42)
-val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
+def data_splits(df):
+    X, y = df['text'], df['label']
 
-tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
+    train_X, temp_X, train_y, temp_y = train_test_split(X, y, train_size=0.7, test_size=0.3)
+    val_X, test_X, val_y, test_y = train_test_split(temp_X, temp_y, train_size=0.5, test_size=0.5)
+    
+    return train_X, val_X, test_X, train_y, val_y, test_y
 
-train_encodings = tokenizer(train_df['text'].tolist(), truncation=True, padding=True)
-val_encodings = tokenizer(val_df['text'].tolist(), truncation=True, padding=True)
-test_encodings = tokenizer(test_df['text'].tolist(), truncation=True, padding=True)
+def check_embeddings():
+    return os.path.exists('../data/embeddings.pkl')
 
-model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=2)
+def create_embeddings_Transformer(train_X, val_X, test_X):
+    tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
+    
+    train_encodings = tokenizer(train_X.tolist(), truncation=True, padding=True)
+    val_encodings = tokenizer(val_X.tolist(), truncation=True, padding=True)
+    test_encodings = tokenizer(test_X.tolist(), truncation=True, padding=True)
 
-training_args = TrainingArguments(
-    output_dir='./results',
-    evaluation_strategy="epoch",
-    learning_rate=2e-5,
-    per_device_train_batch_size=16,
-    per_device_eval_batch_size=16,
-    num_train_epochs=3,
-    weight_decay=0.01,
-)
+    embeddings = {
+        'train': train_encodings,
+        'val': val_encodings,
+        'test': test_encodings
+    }
+    with open('../data/embeddings.pkl', 'wb') as f:
+        pickle.dump(embeddings, f)
 
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=train_encodings,
-    eval_dataset=val_encodings,
-)
+    return train_encodings, val_encodings, test_encodings
 
-trainer.train()
+def create_embeddings_TFIDF(train_X, val_X, test_X):
+    vectorizer = TfidfVectorizer()
+    train_encodings = vectorizer.fit_transform(train_X).toarray()
+    val_encodings = vectorizer.transform(val_X).toarray()
+    test_encodings = vectorizer.transform(test_X).toarray()
 
-trainer.evaluate(eval_dataset=test_encodings)
-predictions = trainer.predict(test_encodings)
+    embeddings = {
+        'train': train_encodings,
+        'val': val_encodings,
+        'test': test_encodings
+    }
+    with open('../data/embeddings.pkl', 'wb') as f:
+        pickle.dump(embeddings, f)
 
-preds = predictions.predictions.argmax(-1)
-accuracy = (preds == test_df['label'].values).mean()
-print(f"Test Accuracy: {accuracy:.4f}")
+    return train_encodings, val_encodings, test_encodings
 
-save = input("Save model? (y/n): ")
-if save.lower() == 'y':
-    model.save_pretrained('../model')
-    tokenizer.save_pretrained('../model')
-    print("Model and tokenizer saved to '../model'")
+def save_targets(train_y, val_y, test_y):
+    save_targets = {
+        'train_y': train_y,
+        'val_y': val_y,
+        'test_y': test_y
+    }
+    with open('../data/targets.pkl', 'wb') as f:
+        pickle.dump(save_targets, f)
+
+def get_embeddings_from_file():
+    with open('../data/embeddings.pkl', 'rb') as f:
+        embeddings = pickle.load(f)
+    return embeddings['train'], embeddings['val'], embeddings['test']
+
+def get_targets_from_file():
+    with open('../data/targets.pkl', 'rb') as f:
+        targets = pickle.load(f)
+    return targets['train_y'], targets['val_y'], targets['test_y']
+
+def train_model_SVC(train_encodings, train_y):
+    clf = SVC()
+    clf.fit(train_encodings['input_ids'], train_y)
+    return clf
+
+def train_model_LogisticRegression(train_encodings, train_y):
+    clf = LogisticRegression(max_iter=1000)
+    clf.fit(train_encodings['input_ids'], train_y)
+    return clf
+
+def train_model_MultinomialNB(train_encodings, train_y):
+    clf = MultinomialNB()
+    clf.fit(train_encodings['input_ids'], train_y)
+    return clf
+
+def train_model_DecisionTree(train_encodings, train_y):
+    clf = DecisionTreeClassifier()
+    clf.fit(train_encodings['input_ids'], train_y)
+    return clf
+
+def train_model_RandomForest(train_encodings, train_y):
+    clf = RandomForestClassifier()
+    clf.fit(train_encodings['input_ids'], train_y)
+    return clf
+
+def evaluate_model(clf, val_encodings, val_y):
+    val_preds = clf.predict(val_encodings['input_ids'])
+    print("Validation Set Classification Report:")
+    print(classification_report(val_y, val_preds))
+
+def test_model(clf, test_encodings, test_y):
+    test_preds = clf.predict(test_encodings['input_ids'])
+    print("Test Set Classification Report:")
+    print(classification_report(test_y, test_preds))
+
+def main():
+    train_encodings, val_encodings, test_encodings = None, None, None
+    train_y, val_y, test_y = None, None, None
+
+    if not check_embeddings():
+        df = read_data()
+        train_X, val_X, test_X, train_y, val_y, test_y = data_splits(df)
+        train_encodings, val_encodings, test_encodings = create_embeddings_Transformer(train_X, val_X, test_X)
+        save_targets(train_y, val_y, test_y)
+
+        train_y, val_y, test_y = train_y, val_y, test_y
+    else:
+        train_encodings, val_encodings, test_encodings = get_embeddings_from_file()
+        train_y, val_y, test_y = get_targets_from_file()
+
+    clf = train_model_RandomForest(train_encodings, train_y)
+    evaluate_model(clf, val_encodings, val_y)
+    test_model(clf, test_encodings, test_y)
+
+if __name__ == "__main__":
+    main()
