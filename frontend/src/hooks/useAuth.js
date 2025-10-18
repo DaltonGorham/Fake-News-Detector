@@ -8,11 +8,6 @@ export function useAuth() {
   const [pendingEmailVerification, setPendingEmailVerification] = useState(null);
   const [user, setUser] = useState(null);
 
-    // TODO: Replace with backend API endpoint /api/users/config to fetch user data
-    // goes in api/user.js
-    // - Should accept query params for requested fields (username, avatar_url, etc)
-    // - Replace direct Supabase query with API call
-    // - Update components to use new endpoint
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);

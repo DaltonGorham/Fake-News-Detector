@@ -1,5 +1,5 @@
 .article-input-container {
-  flex: 1;
+  flex: 1; /* crazy change here. BRO allows the container to dynamically fill available space */
   display: flex;
   align-items: center;
   justify-content: center;

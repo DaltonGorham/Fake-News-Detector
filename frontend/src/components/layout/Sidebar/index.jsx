@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
+import { useProfile } from '../../../hooks/useProfile';
 import UserMenu from '../UserMenu';
 import { HiX, HiMenu, HiPlus } from 'react-icons/hi';
 import './styles.css';
@@ -8,6 +9,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { user } = useAuth();
+  const { profile, isLoading } = useProfile();
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
@@ -37,13 +39,23 @@ export default function Sidebar() {
         onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
         >
           <div className="user-avatar">
-            {user?.user_metadata?.avatar_url ? (
-              <img src={user.user_metadata.avatar_url} alt="User avatar" />
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="User avatar" />
             ) : (
-              user?.email?.[0]?.toUpperCase() || '?'
+              (profile?.username?.[0] || user?.email?.[0] || '?').toUpperCase()
             )}
           </div>
-          <span>{user?.email || 'Your Account'}</span>
+          <span className={`username ${
+            profile?.username 
+              ? profile.username.length <= 12 
+                ? 'username-short'
+                : profile.username.length >= 20 
+                  ? 'username-long' 
+                  : ''
+              : ''
+          }`}>
+            {profile?.username || 'Your Account'}
+          </span>
         </button>
         <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} />
       </div>

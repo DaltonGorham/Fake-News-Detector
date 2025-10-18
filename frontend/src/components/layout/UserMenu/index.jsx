@@ -1,12 +1,14 @@
 import { useRef, useEffect, useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
+import { useProfile } from '../../../hooks/useProfile';
 import { HiOutlineUser, HiOutlineLogout } from 'react-icons/hi';
 import ProfileSettings from '../ProfileSettings';
 import './styles.css';
 
 export default function UserMenu({ isOpen, onClose }) {
   const menuRef = useRef(null);
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
+  const { profile } = useProfile();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
 
@@ -33,13 +35,14 @@ export default function UserMenu({ isOpen, onClose }) {
     <div className="user-menu" ref={menuRef}>
       <div className="user-menu-header">
         <div className="user-avatar-large">
-          {user?.user_metadata?.avatar_url ? (
-            <img src={user.user_metadata.avatar_url} alt="User avatar" />
+          {profile?.avatar_url ? (
+            <img src={profile.avatar_url} alt="User avatar" />
           ) : (
-            user?.email?.[0]?.toUpperCase() || '?'
+            (profile?.username?.[0] || user?.email?.[0] || '?').toUpperCase()
           )}
         </div>
         <div className="user-info">
+          {profile?.username && <div className="user-name">{profile.username}</div>}
           <div className="user-email">{user?.email}</div>
         </div>
       </div>
@@ -50,7 +53,10 @@ export default function UserMenu({ isOpen, onClose }) {
           Profile Settings
         </button>
         
-        <button className="menu-item" onClick={signOut}>
+        <button className="menu-item" onClick={() => {
+          logout();
+          onClose();
+        }}>
           <HiOutlineLogout size={20} />
           Log Out
         </button>

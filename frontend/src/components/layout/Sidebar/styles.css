@@ -110,3 +110,22 @@
   height: 100%;
   object-fit: cover;
 }
+
+.username {
+  font-size: 14px;
+  transition: font-size 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  text-align: left;
+}
+
+.username-short {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.username-long {
+  font-size: 13px;
+}

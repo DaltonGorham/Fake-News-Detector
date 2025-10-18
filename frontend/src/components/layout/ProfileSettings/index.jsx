@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
+import { useProfile } from '../../../hooks/useProfile';
 import { HiUpload, HiX } from 'react-icons/hi';
 import { userApi } from '../../../api/user';
 import './styles.css';
 
 export default function ProfileSettings({ isOpen, onClose }) {
   const { user } = useAuth();
+  const { profile, refreshProfile } = useProfile();
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -47,11 +49,11 @@ export default function ProfileSettings({ isOpen, onClose }) {
           <div className="avatar-section">
             <div className="avatar-upload" onClick={handleAvatarClick}>
               <div className="avatar-preview">
-                {user?.user_metadata?.avatar_url ? (
-                  <img src={user.user_metadata.avatar_url} alt="User avatar" />
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="User avatar" />
                 ) : (
                   <span className="avatar-placeholder">
-                    {user?.email?.[0]?.toUpperCase() || ''}
+                    {(profile?.username?.[0] || user?.email?.[0] || '').toUpperCase()}
                   </span>
                 )}
                 <div className="upload-overlay">
@@ -75,6 +77,8 @@ export default function ProfileSettings({ isOpen, onClose }) {
             <div className="info-item">
               <label>Email</label>
               <span>{user?.email}</span>
+              <label>Username</label>
+              <span>{profile?.username || 'Not set'}</span>
             </div>
           </div>
         </div>
