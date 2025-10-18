@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { articleApi } from '../../api';
 
-export function useArticleSubmission() {
+export function useArticleSubmission(onSuccess) {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSubmit = async () => {
-    if (!url.trim()) return;
+    if (!url.trim()) {
+      setError('Please enter a URL');
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -15,23 +18,46 @@ export function useArticleSubmission() {
     try {
       const { data, error } = await articleApi.analyzeArticle(url);
       if (error) throw new Error(error);
+
+      // Clear any previous errors
+      setError(null);
       
-      // Handle successful analysis
-      console.log('Analysis result:', data);
+      // Refresh the history list with the new article
+      if (onSuccess) {
+        onSuccess(data);
+      }
+      
       return data;
     } catch (err) {
       setError(err.message);
       console.error('Analysis failed:', err);
     } finally {
       setLoading(false);
+      if (!error) {
+        setUrl('');
+      }
     }
+  };
+
+  const handleUrlChange = (newUrl) => {
+    setUrl(newUrl);
+    if (error) {
+      setError(null);
+    }
+  };
+
+  const reset = () => {
+    setUrl('');
+    setError(null);
+    setLoading(false);
   };
 
   return {
     url,
-    setUrl,
-    handleSubmit,
+    setUrl: handleUrlChange,
     loading,
-    error
+    error,
+    handleSubmit,
+    reset
   };
 }

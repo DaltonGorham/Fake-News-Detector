@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useProfile } from '../../../hooks/useProfile';
 import UserMenu from '../UserMenu';
-import { HiX, HiMenu, HiPlus } from 'react-icons/hi';
+import { 
+  HiX, 
+  HiMenu, 
+  HiPlus 
+} from 'react-icons/hi';
 import './styles.css';
-
-export default function Sidebar() {
+  
+export default function Sidebar({ history, isLoading, error }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { user } = useAuth();
-  const { profile, isLoading } = useProfile();
+  const { profile } = useProfile();
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
@@ -29,9 +33,59 @@ export default function Sidebar() {
       </div>
 
       <div className="sidebar-content">
-        <div className="history-list">
-          {/* History items will go here */}
+        <div className="history-header">
+          <h2>History</h2>
         </div>
+        
+        {error ? (
+          <div className="history-error">
+            Failed to load history. Please try again.
+          </div>
+        ) : isLoading ? (
+          <div className="history-loading">
+            <div className="loading-spinner" />
+            Loading history...
+          </div>
+        ) : history.length === 0 ? (
+          <div className="history-empty">
+            No articles checked yet.
+          </div>
+        ) : (
+          <div className="history-list">
+            {history.map(item => (
+              <button 
+                key={item.id} 
+                className={`history-item ${item.ai_result.truthness_label.toLowerCase()}`}
+                onClick={() => {
+                  // TODO: Navigate to article details or reopen for editing
+                  console.log('Open article:', item.article.id);
+                }}
+              >
+                <div className="history-details">
+                  <div className="history-title">{item.article.title}</div>
+                  <div className="history-meta">
+                    <div className="history-info">
+                      <span className="history-date">
+                        {new Date(item.created_at).toLocaleDateString()}
+                      </span>
+                      <span className="history-source">
+                        {item.article.source}
+                      </span>
+                    </div>
+                    <div className="history-result">
+                      <span className="history-label">
+                        {item.ai_result.truthness_label.toLowerCase()}
+                      </span>
+                      <span className="history-score">
+                        {(item.ai_result.truthness_score * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="sidebar-footer">

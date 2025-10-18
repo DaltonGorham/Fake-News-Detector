@@ -42,12 +42,6 @@ function AppRoutes() {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  /*
-    TODO - make sure after verification we wait
-    for user to switch back to original tab
-    before trying to redirect them to dashboard
-    for a smoother experience
-  */
   if (loading) {
     return <Loading />;
   }

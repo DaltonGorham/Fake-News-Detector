@@ -51,6 +51,60 @@
 .article-submit-button {
   position: absolute;
   right: 8px;
+  background: none;
+  border: none;
+  color: #4c6ef5;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.article-submit-button:hover:not(:disabled) {
+  background: rgba(76, 110, 245, 0.1);
+}
+
+.article-submit-button:disabled {
+  color: rgba(76, 110, 245, 0.5);
+  cursor: not-allowed;
+}
+
+.article-submit-button.loading {
+  cursor: wait;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(76, 110, 245, 0.1);
+  border-top-color: #4c6ef5;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.article-input-error {
+  color: #ff4d4f;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  background: rgba(255, 77, 79, 0.1);
+  border: 1px solid rgba(255, 77, 79, 0.2);
+}
+
+.article-submit-button {
+  position: absolute;
+  right: 8px;
   width: 36px;
   height: 36px;
   background: rgba(76, 110, 245, 0.15);
