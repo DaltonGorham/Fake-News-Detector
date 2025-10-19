@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Response, Request
-from src.routes import article_routes
+from src.routes import article_routes, user_routes
 from src.config import settings
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,7 +14,7 @@ async def options_handler(full_path: str, request: Request) -> Response:
             headers={
                 "Access-Control-Allow-Origin": origin,
                 "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-                "Access-Control-Allow-Headers": "authorization, content-type, accept",
+                "Access-Control-Allow-Headers": "Authorization, Content-Type, Accept",
                 "Access-Control-Allow-Credentials": "true",
                 "Access-Control-Max-Age": "3600",
             }
@@ -33,3 +33,4 @@ app.add_middleware(
 )
 
 app.include_router(article_routes.router, prefix="/api/v1")
+app.include_router(user_routes.router, prefix="/api/v1")
