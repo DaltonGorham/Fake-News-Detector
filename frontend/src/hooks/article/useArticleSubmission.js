@@ -19,12 +19,11 @@ export function useArticleSubmission(onSuccess) {
       const { data, error } = await articleApi.analyzeArticle(url);
       if (error) throw new Error(error);
 
-      // Clear any previous errors
       setError(null);
+      setUrl('');
       
-      // Refresh the history list with the new article
       if (onSuccess) {
-        onSuccess(data);
+        await onSuccess(data);
       }
       
       return data;
@@ -33,9 +32,6 @@ export function useArticleSubmission(onSuccess) {
       console.error('Analysis failed:', err);
     } finally {
       setLoading(false);
-      if (!error) {
-        setUrl('');
-      }
     }
   };
 

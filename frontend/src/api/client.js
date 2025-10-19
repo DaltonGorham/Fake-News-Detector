@@ -13,10 +13,12 @@ const getAuthHeader = async () => {
 
 export const apiClient = async (endpoint, options = {}) => {
   try {
-    
-    const headers = {
-      'Content-Type': 'application/json'
-    };
+
+    const headers = {};
+
+    if (!(options.body instanceof FormData)) {
+      headers['Content-Type'] = 'application/json';
+    }
 
     const authHeader = await getAuthHeader();
     if (authHeader) {

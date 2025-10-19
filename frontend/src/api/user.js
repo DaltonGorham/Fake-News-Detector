@@ -20,10 +20,9 @@ export const userApi = {
     const formData = new FormData();
     formData.append('file', file);
 
-    return apiClient('/api/users/avatar', {
+    return apiClient('/api/v1/users/avatar', {
       method: 'POST',
-      body: formData,
-      headers: {}
+      body: formData
     });
   },
 

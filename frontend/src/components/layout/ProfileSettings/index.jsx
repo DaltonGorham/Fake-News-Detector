@@ -1,15 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
-import { useProfile } from '../../../hooks/useProfile';
 import { HiUpload, HiX } from 'react-icons/hi';
 import { userApi } from '../../../api/user';
 import './styles.css';
 
-export default function ProfileSettings({ isOpen, onClose }) {
-  const { user } = useAuth();
-  const { profile, refreshProfile } = useProfile();
+export default function ProfileSettings({ isOpen, onClose, user, profile, refreshProfile }) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
+  const [uploadMessage, setUploadMessage] = useState('');
 
   if (!isOpen) return null;
 
@@ -23,14 +20,15 @@ export default function ProfileSettings({ isOpen, onClose }) {
       if (!file) return;
 
       setIsUploading(true);
-      console.log('Uploading file:', file);
-      error = "This is a test error";
-     // const { data, error } = await userApi.uploadAvatar(file);
-     // if (error) throw error;
+      
+      const { data, error } = await userApi.uploadAvatar(file);
 
+      if (error) throw new Error(error);
+      
+      await refreshProfile();
+      setUploadMessage('Avatar uploaded successfully');
     } catch (error) {
-   //   console.error('Error:', error.message);
-      // TODO: Show error message to user
+      setUploadMessage(`Failed to upload avatar: ${error.message}`);
     } finally {
       setIsUploading(false);
     }
@@ -71,6 +69,7 @@ export default function ProfileSettings({ isOpen, onClose }) {
             <span className="upload-text">
               {isUploading ? 'Uploading...' : 'Click to upload avatar'}
             </span>
+            <span className="upload-message">{uploadMessage}</span>
           </div>
 
           <div className="profile-info">

@@ -12,8 +12,8 @@ import './styles.css';
 export default function Sidebar({ history, isLoading, error }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { user } = useAuth();
-  const { profile } = useProfile();
+  const { user, logout } = useAuth();
+  const { profile, refreshProfile } = useProfile();
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
@@ -52,38 +52,42 @@ export default function Sidebar({ history, isLoading, error }) {
           </div>
         ) : (
           <div className="history-list">
-            {history.map(item => (
-              <button 
-                key={item.id} 
-                className={`history-item ${item.ai_result.truthness_label.toLowerCase()}`}
-                onClick={() => {
-                  // TODO: Navigate to article details or reopen for editing
-                  console.log('Open article:', item.article.id);
-                }}
-              >
-                <div className="history-details">
-                  <div className="history-title">{item.article.title}</div>
-                  <div className="history-meta">
-                    <div className="history-info">
-                      <span className="history-date">
-                        {new Date(item.created_at).toLocaleDateString()}
-                      </span>
-                      <span className="history-source">
-                        {item.article.source}
-                      </span>
-                    </div>
-                    <div className="history-result">
-                      <span className="history-label">
-                        {item.ai_result.truthness_label.toLowerCase()}
-                      </span>
-                      <span className="history-score">
-                        {(item.ai_result.truthness_score * 100).toFixed(1)}%
-                      </span>
+            {history.map(item => {
+              const aiResult = item.article?.ai_result?.[0]; // hacky fix because backend returns array
+              if (!aiResult) return null;
+              return ( // only need this return because of the aiResult var
+                <button 
+                  key={item.id} 
+                  className={`history-item ${aiResult?.truthness_label.toLowerCase()}`}
+                  onClick={() => {
+                    // TODO: Navigate to article details or reopen for editing
+                    console.log('Open article:', item.article.id);
+                  }}
+                >
+                  <div className="history-details">
+                    <div className="history-title">{item.article.title}</div>
+                    <div className="history-meta">
+                      <div className="history-info">
+                        <span className="history-date">
+                          {new Date(item.created_at).toLocaleDateString()}
+                        </span>
+                        <span className="history-source">
+                          {item.article.source}
+                        </span>
+                      </div>
+                      <div className="history-result">
+                        <span className="history-label">
+                          {aiResult?.truthness_label.toLowerCase()}
+                        </span>
+                        <span className="history-score">
+                          {(aiResult?.truthness_score * 100).toFixed(1)}%
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -111,7 +115,14 @@ export default function Sidebar({ history, isLoading, error }) {
             {profile?.username || 'Your Account'}
           </span>
         </button>
-        <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} />
+        <UserMenu 
+          isOpen={isUserMenuOpen} 
+          onClose={() => setIsUserMenuOpen(false)} 
+          user={user}
+          profile={profile}
+          logout={logout}
+          refreshProfile={refreshProfile}
+        />
       </div>
     </div>
   );

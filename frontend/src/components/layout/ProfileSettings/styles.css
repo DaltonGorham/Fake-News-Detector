@@ -139,3 +139,11 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 15px;
 }
+
+.upload-message {
+  margin-top: 8px;
+  font-size: 13px;
+  color: darkgray;
+  min-height: 18px;
+  text-align: center;
+}
