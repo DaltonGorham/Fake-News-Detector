@@ -13,7 +13,7 @@ app.add_middleware(
         "https://fake-news-detector-git-*.vercel.app",  # Preview deployments
         "https://fake-news-detector-*.vercel.app"  # Latest preview
     ],
-    allow_origin_regex="https://fake-news-detector-git-.*\.vercel\.app",  # All preview deployments
+    allow_origin_regex=r"https://fake-news-detector-git-.*\.vercel\.app",  # All preview deployments
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
