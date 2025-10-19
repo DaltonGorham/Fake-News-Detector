@@ -1,12 +1,15 @@
 import React from 'react';
 import { useArticleSubmission } from '../../../hooks/article/useArticleSubmission';
+import { HiArrowRight } from 'react-icons/hi';
 import './styles.css';
 
-export default function ArticleInput() {
-  const { url, setUrl, handleSubmit } = useArticleSubmission();
+export default function ArticleInput({ onArticleSubmitted }) {
+  const { url, setUrl, loading, error, handleSubmit } = useArticleSubmission(() => {
+    onArticleSubmitted();
+  });
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !loading) {
       handleSubmit();
     }
   };
@@ -25,28 +28,28 @@ export default function ArticleInput() {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={handleKeyPress}
-            placeholder=""
+            placeholder="Enter a URL to analyze"
           />
           
           <button 
-            className="article-submit-button"
+            className={`article-submit-button ${loading ? 'loading' : ''}`}
             onClick={handleSubmit}
+            disabled={loading}
             aria-label="Submit URL"
           >
-            <svg 
-              width="20" 
-              height="20" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2"
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            {loading ? (
+              <div className="spinner"></div>
+            ) : (
+              <HiArrowRight size={20} />
+            )}
           </button>
         </div>
+        
+        {error && (
+          <div className="article-input-error">
+            {error}
+          </div>
+        )}
       </div>
     </div>
   );

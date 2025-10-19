@@ -1,8 +1,19 @@
 import { useState } from 'react';
+import { useAuth } from '../../../hooks/useAuth';
+import { useProfile } from '../../../hooks/useProfile';
+import UserMenu from '../UserMenu';
+import { 
+  HiX, 
+  HiMenu, 
+  HiPlus 
+} from 'react-icons/hi';
 import './styles.css';
-
-export default function Sidebar() {
+  
+export default function Sidebar({ history, isLoading, error }) {
   const [isOpen, setIsOpen] = useState(true);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const { profile } = useProfile();
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
@@ -11,63 +22,96 @@ export default function Sidebar() {
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
       >
-        <svg 
-          width="24" 
-          height="24" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round"
-        >
-          {isOpen ? (
-            // X icon for closing
-            <>
-                <path d="M18 6L6 18" />
-                <path d="M6 6L18 18" />
-            </>
-            ) : (
-            // Hamburger menu icon for opening
-            <>
-                <path d="M3 12h18" />
-                <path d="M3 6h18" />
-                <path d="M3 18h18" />
-            </>
-            )}
-        </svg>
+        {isOpen ? <HiX size={24} /> : <HiMenu size={24} />}
       </button>
 
       <div className="sidebar-header">
         <button className="new-article-button">
-          <svg 
-            width="16" 
-            height="16" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          >
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
+          <HiPlus size={16} />
           New Article
         </button>
       </div>
 
       <div className="sidebar-content">
-        <div className="history-list">
-          {/* History items will go here */}
+        <div className="history-header">
+          <h2>History</h2>
         </div>
+        
+        {error ? (
+          <div className="history-error">
+            Failed to load history. Please try again.
+          </div>
+        ) : isLoading ? (
+          <div className="history-loading">
+            <div className="loading-spinner" />
+            Loading history...
+          </div>
+        ) : history.length === 0 ? (
+          <div className="history-empty">
+            No articles checked yet.
+          </div>
+        ) : (
+          <div className="history-list">
+            {history.map(item => (
+              <button 
+                key={item.id} 
+                className={`history-item ${item.ai_result.truthness_label.toLowerCase()}`}
+                onClick={() => {
+                  // TODO: Navigate to article details or reopen for editing
+                  console.log('Open article:', item.article.id);
+                }}
+              >
+                <div className="history-details">
+                  <div className="history-title">{item.article.title}</div>
+                  <div className="history-meta">
+                    <div className="history-info">
+                      <span className="history-date">
+                        {new Date(item.created_at).toLocaleDateString()}
+                      </span>
+                      <span className="history-source">
+                        {item.article.source}
+                      </span>
+                    </div>
+                    <div className="history-result">
+                      <span className="history-label">
+                        {item.ai_result.truthness_label.toLowerCase()}
+                      </span>
+                      <span className="history-score">
+                        {(item.ai_result.truthness_score * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="sidebar-footer">
-        <button className="user-button">
-          <div className="user-avatar">D</div>
-          <span>Your Account</span>
+        <button className="user-button"
+        onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+        >
+          <div className="user-avatar">
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="User avatar" />
+            ) : (
+              (profile?.username?.[0] || user?.email?.[0] || '?').toUpperCase()
+            )}
+          </div>
+          <span className={`username ${
+            profile?.username 
+              ? profile.username.length <= 12 
+                ? 'username-short'
+                : profile.username.length >= 20 
+                  ? 'username-long' 
+                  : ''
+              : ''
+          }`}>
+            {profile?.username || 'Your Account'}
+          </span>
         </button>
+        <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} />
       </div>
     </div>
   );
