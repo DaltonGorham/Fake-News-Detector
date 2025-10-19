@@ -1,23 +1,80 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { validateEmail, validatePassword, validateUsername } from '../util/validator.js';
 import { getRedirectURL, formatAuthError } from '../util/authUtils.js';
 
+/**
+ * CACHING STRATEGY (Generated with AI assistance)
+ * 
+ * This caching solution helps prevent multiple API calls when useAuth() is called
+ * by multiple components simultaneously. By deduplicating in-flight requests with
+ * initPromise, we ensure only one /auth/v1/user API call happens at a time.
+ */
+const userCache = {
+  user: null,
+  isInitialized: false,
+  initPromise: null
+};
+
 export function useAuth() {
   const [status, setStatus] = useState('');
   const [pendingEmailVerification, setPendingEmailVerification] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(userCache.user);
+  const hasInitializedRef = useRef(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
+    let isMounted = true;
 
+    const initializeAuth = async () => {
+      if (userCache.isInitialized) {
+        return;
+      }
+
+      if (userCache.initPromise) {
+        try {
+          const userData = await userCache.initPromise;
+          if (isMounted) {
+            setUser(userData);
+          }
+        } catch (err) {
+          console.error('Auth error:', err);
+        }
+        return;
+      }
+
+      const initPromise = supabase.auth.getUser().then(({ data: { user } }) => {
+        userCache.user = user;
+        if (isMounted) {
+          setUser(user);
+        }
+        return user;
+      }).catch((err) => {
+        console.error('Auth error:', err);
+        throw err;
+      }).finally(() => {
+        userCache.isInitialized = true;
+        hasInitializedRef.current = true;
+      });
+
+      userCache.initPromise = initPromise;
+      return initPromise;
+    };
+
+    initializeAuth();
+
+    // Listen for auth state changes (login, logout, etc.)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      const newUser = session?.user ?? null;
+      userCache.user = newUser;
+      if (isMounted) {
+        setUser(newUser);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const handleError = (error, prefix = '') => {

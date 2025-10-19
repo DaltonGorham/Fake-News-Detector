@@ -1,14 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
-import { useProfile } from '../../../hooks/useProfile';
 import { HiOutlineUser, HiOutlineLogout } from 'react-icons/hi';
 import ProfileSettings from '../ProfileSettings';
 import './styles.css';
 
-export default function UserMenu({ isOpen, onClose }) {
+export default function UserMenu({ isOpen, onClose, user, profile, logout, refreshProfile }) {
   const menuRef = useRef(null);
-  const { user, logout } = useAuth();
-  const { profile } = useProfile();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
 
@@ -65,6 +61,9 @@ export default function UserMenu({ isOpen, onClose }) {
       <ProfileSettings 
         isOpen={isProfileOpen} 
         onClose={() => setIsProfileOpen(false)}
+        user={user}
+        profile={profile}
+        refreshProfile={refreshProfile}
       />
     </div>
   );
