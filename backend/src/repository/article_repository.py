@@ -3,6 +3,9 @@ from ..lib.supabase_client import supabase_client
 
 def get_all(user_id: str):
     """Get all articles for a specific user"""
+    # SQL: SELECT * FROM "Input History" 
+    # WHERE input_by_user = user_id 
+    # ORDER BY history_index DESC
     response = supabase_client.from_('Input History') \
         .select('''
             id,
@@ -31,6 +34,9 @@ def get_all(user_id: str):
 
 def get_by_id(article_id: int):
     """Get a single article by ID with its AI result"""
+    # SQL: SELECT * FROM Article 
+    # WHERE id = article_id 
+    # JOIN "AI Result" on article_id
     response = supabase_client.from_('Article') \
         .select('''
             id,
@@ -55,6 +61,7 @@ def get_by_id(article_id: int):
 def save(analysis_data: dict):
     """Save a new article analysis across multiple tables"""
 
+    # SQL: INSERT INTO Article (url, title, source, collected_date)
     article_data = {
         'url': analysis_data['article']['url'],
         'title': analysis_data['article']['title'],
@@ -64,6 +71,7 @@ def save(analysis_data: dict):
     article_response = supabase_client.table('Article').insert(article_data).execute()
     article_id = article_response.data[0]['id']
 
+    # SQL: INSERT INTO "AI Result" (article_id, genre, truthness_label, truthness_score, related_articles)
     ai_result_data = {
         'article_id': article_id,
         'genre': analysis_data['ai_result']['genre'],
@@ -73,6 +81,11 @@ def save(analysis_data: dict):
     }
     ai_result_response = supabase_client.table('AI Result').insert(ai_result_data).execute()
     ai_result_id = ai_result_response.data[0]['id']
+
+    # SQL: SELECT history_index FROM "Input History" 
+    # WHERE input_by_user = user_id 
+    # ORDER BY history_index DESC 
+    # LIMIT 1
 
     history_response = supabase_client.from_('Input History') \
         .select('history_index') \
@@ -85,6 +98,7 @@ def save(analysis_data: dict):
     if history_response.data:
         next_index = history_response.data[0]['history_index'] + 1
 
+    # SQL: INSERT INTO "Input History" (created_at, history_index, input_by_user, article_id, ai_result_id)
     history_data = {
         'created_at': datetime.now().isoformat(),
         'history_index': next_index,
@@ -98,6 +112,7 @@ def save(analysis_data: dict):
 
 def clear(user_id: str):
     """Clear all articles from history for a specific user"""
+    # SQL: SELECT article_id FROM "Input History" WHERE input_by_user = user_id
     history_response = supabase_client.from_('Input History') \
         .select('article_id') \
         .eq('input_by_user', user_id) \
@@ -109,7 +124,10 @@ def clear(user_id: str):
     article_ids = [item['article_id'] for item in history_response.data]
 
     # Delete in correct order due to foreign key constraints
+    # SQL: DELETE FROM "Input History" WHERE input_by_user = user_id
     supabase_client.table('Input History').delete().eq('input_by_user', user_id).execute()
+    # SQL: DELETE FROM "AI Result" WHERE article_id IN (article_ids)
     supabase_client.table('AI Result').delete().in_('article_id', article_ids).execute()
+    # SQL: DELETE FROM Article WHERE id IN (article_ids)
     supabase_client.table('Article').delete().in_('id', article_ids).execute()
     return True

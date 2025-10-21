@@ -37,17 +37,18 @@ class ArticleService:
     @staticmethod
     def analyze_article(url: str, user_id: str):
         """Analyze a new article and add it to history"""
+        # Check for duplicate article URL first
+        existing_articles = article_repository.get_all(user_id)
+        if any(article['article']['url'] == url for article in existing_articles):
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "message": "Article already analyzed",
+                    "error": "This URL has already been analyzed by you"
+                }
+            )
+        
         try:
-            existing_articles = article_repository.get_all(user_id)
-            if any(article['article']['url'] == url for article in existing_articles):
-                raise HTTPException(
-                    status_code=409,
-                    detail={
-                        "message": "Article already analyzed",
-                        "error": "This URL has already been analyzed by you"
-                    }
-                )
-
             # In a real implementation, this would call an AI service
             # For now, we'll use mock AI results
             current_time = datetime.now().isoformat()
@@ -84,9 +85,8 @@ class ArticleService:
                 )
             return result
 
-        except HTTPException:
-            raise
         except Exception as e:
+            # Catch any unexpected errors and wrap them in HTTPException
             raise HTTPException(
                 status_code=500,
                 detail={
@@ -110,8 +110,10 @@ class ArticleService:
                 )
             return article
         except HTTPException:
+            # Re-raise HTTP exceptions directly
             raise
         except Exception as e:
+            # Wrap other exceptions in a 500 error
             raise HTTPException(
                 status_code=500,
                 detail={
