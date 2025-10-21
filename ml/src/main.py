@@ -149,5 +149,10 @@ def main():
     evaluate_model(clf, val_encodings, val_y)
     test_model(clf, test_encodings, test_y)
 
+    if input("Save model? (y/n): ") == 'y':
+        os.makedirs('../models', exist_ok=True)
+        with open('../models/model.pkl', 'wb') as f:
+            pickle.dump(clf, f)
+
 if __name__ == "__main__":
     main()
