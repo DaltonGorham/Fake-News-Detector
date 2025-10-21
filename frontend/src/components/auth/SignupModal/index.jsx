@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/SignupModal.css';
+import './styles.css';
 
 export default function SignupModal({ onClose, onSignup, status }) {
   const [formData, setFormData] = useState({

@@ -1,16 +1,143 @@
-# React + Vite
+# Fake News Detector Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React app for analyzing articles and detecting potential fake news. Built with Vite and uses Supabase for auth.
 
-Currently, two official plugins are available:
+## Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+# Install dependencies
+npm install
 
-## React Compiler
+# Start dev server
+npm run dev
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Build for production
+npm run build
+```
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+frontend/
+├── src/
+│   ├── api/                 # API communication layer
+│   │   ├── index.js        # API exports 
+│   │   ├── client.js       # Base API client configuration
+│   │   └── articles.js     # Article-specific API endpoints
+│   │
+│   ├── components/         # UI Components
+│   │   ├── auth/          # Authentication related components
+│   │   ├── common/        # Shared/reusable components
+│   │   └── layout/        # Layout and structural components
+│   │
+│   ├── hooks/             # Custom React hooks
+│   │   └── article/       # Article-related hooks
+│   │
+│   ├── lib/              # Library configurations
+│   │   └── supabaseClient.js
+│   │
+│   ├── pages/            # Page components
+│   ├── styles/           # Global styles
+│   └── util/             # Utility functions
+```
+
+## Architecture Design
+
+### How It Works
+
+The app is built with a few simple pieces:
+
+#### Base Client (`client.js`)
+```javascript
+const apiClient = async (endpoint, options) => {
+  // 1. Handles authentication headers from Supabase
+  // 2. Manages common request configurations
+  // 3. Processes responses
+  // 4. Returns consistent { data, error } structure
+}
+```
+
+#### Feature-Specific APIs (`articles.js`)
+Currently implemented with mock data for development:
+```javascript
+const articleApi = {
+  analyzeArticle: async (url) => {
+    // Returns mock analysis data
+    return {
+      data: {
+        id: "123",
+        credibility_score: 0.85,
+        classification: "reliable"
+      },
+      error: null
+    };
+  }
+}
+```
+
+#### API Barrel File (`index.js`)
+Provides clean imports throughout the application:
+```javascript
+export { apiClient } from './client';
+export { articleApi } from './articles';
+```
+
+### Components
+
+Components are grouped by feature to keep things organized:
+
+- `auth/` - Login and signup stuff
+- `common/` - Reusable components like loading spinners
+- `layout/` - Main page layout components
+
+Each component has its own CSS file right next to it to make styling easier:
+
+```
+components/
+└── auth/
+    └── LoginForm/
+        ├── index.jsx
+        └── styles.css
+```
+
+### Custom Hooks
+
+The complex stuff is handled in hooks. For example, article submission looks like:
+
+```javascript
+const useArticleSubmission = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const submitArticle = async (url) => {
+    // Handle submission
+  };
+
+  return { loading, error, submitArticle };
+};
+```
+
+### Error Handling
+
+All API calls return either data or an error:
+```javascript
+const { data, error } = await articleApi.analyze(url);
+if (error) {
+  // Show error message
+}
+```
+
+## Development Notes
+
+Right now:
+- API calls return mock data
+- Added small delays to test loading states
+- Error handling is ready for real API
+- Components are set up for real data
+
+## TODO
+
+When the backend is ready:
+1. Remove mock data in `articles.js`
+2. Point to real API endpoints
+3. Test everything works
