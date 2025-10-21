@@ -8,7 +8,7 @@ app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG)
 @app.options("/{full_path:path}")
 async def options_handler(full_path: str, request: Request) -> Response:
     origin = request.headers.get("origin", "")
-    if origin == "http://localhost:5173" or origin.endswith("daltongorhams-projects.vercel.app"):
+    if origin == "http://localhost:5173" or origin.endswith("daltongorhams-projects.vercel.app") or origin.endswith("https://fake-news-detector-frontend-delta.vercel.app"):
         return Response(
             status_code=200,
             headers={
@@ -25,6 +25,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
+        "https://fake-news-detector-frontend-delta.vercel.app",
     ],
     allow_origin_regex=r"https://fake-news-detector-frontend-[a-zA-Z0-9-]+-daltongorhams-projects\.vercel\.app",
     allow_credentials=True,
