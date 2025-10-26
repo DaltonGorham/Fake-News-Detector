@@ -5,10 +5,10 @@ from ..repository import article_repository
 
 class ArticleService:
     @staticmethod
-    def get_article_history(user_id: str):
+    def get_article_history(user_id: str, user_jwt: str = None):
         """Get all articles in the history for a user"""
         try:
-            history = article_repository.get_all(user_id)
+            history = article_repository.get_all(user_id, user_jwt)
             return history if history else []
         except Exception as e:
             raise HTTPException(
@@ -20,10 +20,10 @@ class ArticleService:
             )
 
     @staticmethod
-    def clear_history(user_id: str):
+    def clear_history(user_id: str, user_jwt: str = None):
         """Clear all articles from history for a user"""
         try:
-            success = article_repository.clear(user_id)
+            success = article_repository.clear(user_id, user_jwt)
             return [] if success else None
         except Exception as e:
             raise HTTPException(
@@ -35,19 +35,20 @@ class ArticleService:
             )
 
     @staticmethod
-    def analyze_article(url: str, user_id: str):
+    def analyze_article(url: str, user_id: str, user_jwt: str = None):
         """Analyze a new article and add it to history"""
+        # Check for duplicate article URL first
+        existing_articles = article_repository.get_all(user_id, user_jwt)
+        if any(article['article']['url'] == url for article in existing_articles):
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "message": "Article already analyzed",
+                    "error": "This URL has already been analyzed by you"
+                }
+            )
+        
         try:
-            existing_articles = article_repository.get_all(user_id)
-            if any(article['article']['url'] == url for article in existing_articles):
-                raise HTTPException(
-                    status_code=409,
-                    detail={
-                        "message": "Article already analyzed",
-                        "error": "This URL has already been analyzed by you"
-                    }
-                )
-
             # In a real implementation, this would call an AI service
             # For now, we'll use mock AI results
             current_time = datetime.now().isoformat()
@@ -73,7 +74,7 @@ class ArticleService:
                 }
             }
 
-            result = article_repository.save(analysis)
+            result = article_repository.save(analysis, user_jwt)
             if not result:
                 raise HTTPException(
                     status_code=500,
@@ -84,9 +85,8 @@ class ArticleService:
                 )
             return result
 
-        except HTTPException:
-            raise
         except Exception as e:
+            # Catch any unexpected errors and wrap them in HTTPException
             raise HTTPException(
                 status_code=500,
                 detail={
@@ -96,10 +96,10 @@ class ArticleService:
             )
 
     @staticmethod
-    def get_article_by_id(article_id: int):
+    def get_article_by_id(article_id: int, user_id: str, user_jwt: str = None):
         """Get a specific article by ID"""
         try:
-            article = article_repository.get_by_id(article_id)
+            article = article_repository.get_by_id(article_id, user_jwt)
             if not article:
                 raise HTTPException(
                     status_code=404,
@@ -110,8 +110,10 @@ class ArticleService:
                 )
             return article
         except HTTPException:
+            # Re-raise HTTP exceptions directly
             raise
         except Exception as e:
+            # Wrap other exceptions in a 500 error
             raise HTTPException(
                 status_code=500,
                 detail={

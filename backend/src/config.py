@@ -9,10 +9,22 @@ class Settings:
     
     SUPABASE_URL: str = os.getenv("SUPABASE_URL")
     SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    SUPABASE_ANON_KEY: str = os.getenv("SUPABASE_ANON_KEY")
     SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET")
 
     def __init__(self):
-        if not self.SUPABASE_JWT_SECRET:
-            raise ValueError("SUPABASE_JWT_SECRET must be set in environment variables")
+        required_vars = {
+            "SUPABASE_URL": self.SUPABASE_URL,
+            "SUPABASE_SERVICE_ROLE_KEY": self.SUPABASE_SERVICE_ROLE_KEY,
+            "SUPABASE_ANON_KEY": self.SUPABASE_ANON_KEY,
+            "SUPABASE_JWT_SECRET": self.SUPABASE_JWT_SECRET,
+        }
+        
+        missing_vars = [name for name, value in required_vars.items() if not value]
+        
+        if missing_vars:
+            raise ValueError(
+                f"Missing required environment variables: {', '.join(missing_vars)}"
+            )
 
 settings = Settings()

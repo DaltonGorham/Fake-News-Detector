@@ -2,24 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { validateEmail, validatePassword, validateUsername } from '../util/validator.js';
 import { getRedirectURL, formatAuthError } from '../util/authUtils.js';
+import { createCache, cachedFetch, resetCache } from '../util/cacheManager.js';
 
-/**
- * CACHING STRATEGY (Generated with AI assistance)
- * 
- * This caching solution helps prevent multiple API calls when useAuth() is called
- * by multiple components simultaneously. By deduplicating in-flight requests with
- * initPromise, we ensure only one /auth/v1/user API call happens at a time.
- */
-const userCache = {
-  user: null,
-  isInitialized: false,
-  initPromise: null
-};
+const userCache = createCache(null);
 
 export function useAuth() {
   const [status, setStatus] = useState('');
   const [pendingEmailVerification, setPendingEmailVerification] = useState(null);
-  const [user, setUser] = useState(userCache.user);
+  const [user, setUser] = useState(userCache.data);
   const hasInitializedRef = useRef(false);
 
   useEffect(() => {
@@ -30,34 +20,28 @@ export function useAuth() {
         return;
       }
 
-      if (userCache.initPromise) {
-        try {
-          const userData = await userCache.initPromise;
-          if (isMounted) {
-            setUser(userData);
+      try {
+        await cachedFetch(
+          userCache,
+          async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            return user;
+          },
+          {
+            onSuccess: (userData) => {
+              if (isMounted) {
+                setUser(userData);
+                hasInitializedRef.current = true;
+              }
+            },
+            onError: (err) => {
+              console.error('Auth error:', err);
+            }
           }
-        } catch (err) {
-          console.error('Auth error:', err);
-        }
-        return;
+        );
+      } catch (err) {
+        console.error('Auth initialization error:', err);
       }
-
-      const initPromise = supabase.auth.getUser().then(({ data: { user } }) => {
-        userCache.user = user;
-        if (isMounted) {
-          setUser(user);
-        }
-        return user;
-      }).catch((err) => {
-        console.error('Auth error:', err);
-        throw err;
-      }).finally(() => {
-        userCache.isInitialized = true;
-        hasInitializedRef.current = true;
-      });
-
-      userCache.initPromise = initPromise;
-      return initPromise;
     };
 
     initializeAuth();
@@ -65,7 +49,7 @@ export function useAuth() {
     // Listen for auth state changes (login, logout, etc.)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       const newUser = session?.user ?? null;
-      userCache.user = newUser;
+      userCache.data = newUser;
       if (isMounted) {
         setUser(newUser);
       }

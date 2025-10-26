@@ -3,11 +3,13 @@ from typing import BinaryIO
 import uuid
 from fastapi import UploadFile
 
-from ..lib.supabase_client import supabase_client
+from ..lib.supabase_client import supabase_admin_client
 
 class UserService:
     def __init__(self):
-        self._client = supabase_client
+        # Use admin client for storage operations (file uploads)
+        # Storage operations require elevated permissions
+        self._client = supabase_admin_client
         self._bucket_name = "avatars"
 
     async def upload_avatar(self, user_id: str, file: UploadFile) -> str:
