@@ -17,7 +17,7 @@ export default function TruthnessGauge({ score, label }) {
 
   const getMeterColor = () => {
     if (percentage < 50) return '#c74a4a'; 
-    if (percentage >= 50 && percentage < 75) return '#d4a574';
+    if (percentage >= 50 && percentage < 66) return '#d4a574';
     return '#3d9d7a';
   };
 

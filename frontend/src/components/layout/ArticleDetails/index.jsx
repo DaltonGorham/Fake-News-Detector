@@ -70,10 +70,15 @@ export default function ArticleDetails({ articleId, isOpen, onClose }) {
   
   const score = aiResult?.truthness_score ? aiResult.truthness_score * 100 : null;
   const getConfidenceMessage = () => {
-    if (!score) return null;
-    if (score < 50) return 'This article is most likely fake';
+    if (!score && score !== 0) return null;
+    if (score < 25) return 'This article is very likely fake';
+    if (score < 40) return 'This article is likely fake';
+    if (score < 50) return 'This article may be fake';
+    if (score === 50) return 'This article\'s authenticity is uncertain';
+    if (score < 60) return 'This article may be real';
     if (score < 75) return 'This article is likely real';
-    return 'This article is most likely real';
+    if (score < 90) return 'This article is very likely real';
+    return 'This article is almost certainly real';
   };  
   
   return (
