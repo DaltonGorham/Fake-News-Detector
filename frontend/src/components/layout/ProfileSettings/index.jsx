@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { HiUpload, HiX } from 'react-icons/hi';
 import { userApi } from '../../../api/user';
+import Loading from '../../common/Loading';
 import './styles.css';
 
 export default function ProfileSettings({ isOpen, onClose, user, profile, refreshProfile }) {
@@ -36,6 +37,11 @@ export default function ProfileSettings({ isOpen, onClose, user, profile, refres
 
   return (
     <div className="profile-settings-overlay">
+      {isUploading && (
+        <div className="upload-loading-overlay">
+          <Loading inline />
+        </div>
+      )}
       <div className="profile-settings-modal">
         <button className="close-button" onClick={onClose} aria-label="Close settings">
           <HiX size={20} />
@@ -67,7 +73,7 @@ export default function ProfileSettings({ isOpen, onClose, user, profile, refres
               style={{ display: 'none' }}
             />
             <span className="upload-text">
-              {isUploading ? 'Uploading...' : 'Click to upload avatar'}
+              Click to upload avatar
             </span>
             <span className="upload-message">{uploadMessage}</span>
           </div>

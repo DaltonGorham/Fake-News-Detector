@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useProfile } from '../../../hooks/useProfile';
 import UserMenu from '../UserMenu';
+import Loading from '../../common/Loading';
 import { 
   HiX, 
   HiMenu, 
@@ -42,10 +43,7 @@ export default function Sidebar({ history, isLoading, error }) {
             Failed to load history. Please try again.
           </div>
         ) : isLoading ? (
-          <div className="history-loading">
-            <div className="loading-spinner" />
-            Loading history...
-          </div>
+          <Loading inline />
         ) : history.length === 0 ? (
           <div className="history-empty">
             No articles checked yet.
