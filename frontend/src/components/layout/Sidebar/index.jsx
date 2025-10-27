@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useProfile } from '../../../hooks/useProfile';
 import UserMenu from '../UserMenu';
+import ArticleDetails from '../ArticleDetails';
 import Loading from '../../common/Loading';
 import { 
   HiX, 
@@ -13,8 +14,20 @@ import './styles.css';
 export default function Sidebar({ history, isLoading, error }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [selectedArticleId, setSelectedArticleId] = useState(null);
+  const [isArticleDetailsOpen, setIsArticleDetailsOpen] = useState(false);
   const { user, logout } = useAuth();
   const { profile, refreshProfile } = useProfile();
+
+  const handleArticleClick = (articleId) => {
+    setSelectedArticleId(articleId);
+    setIsArticleDetailsOpen(true);
+  };
+
+  const handleCloseArticleDetails = () => {
+    setIsArticleDetailsOpen(false);
+    setSelectedArticleId(null);
+  };
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
@@ -57,10 +70,7 @@ export default function Sidebar({ history, isLoading, error }) {
                 <button 
                   key={item.id} 
                   className={`history-item ${aiResult?.truthness_label.toLowerCase()}`}
-                  onClick={() => {
-                    // TODO: Navigate to article details or reopen for editing
-                    console.log('Open article:', item.article.id);
-                  }}
+                  onClick={() => handleArticleClick(item.article.id)}
                 >
                   <div className="history-details">
                     <div className="history-title">{item.article.title}</div>
@@ -122,6 +132,12 @@ export default function Sidebar({ history, isLoading, error }) {
           refreshProfile={refreshProfile}
         />
       </div>
+
+      <ArticleDetails 
+        articleId={selectedArticleId}
+        isOpen={isArticleDetailsOpen}
+        onClose={handleCloseArticleDetails}
+      />
     </div>
   );
 }

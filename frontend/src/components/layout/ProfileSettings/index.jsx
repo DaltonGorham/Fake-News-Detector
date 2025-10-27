@@ -79,7 +79,7 @@ export default function ProfileSettings({ isOpen, onClose, user, profile, refres
           </div>
 
           <div className="profile-info">
-            <div className="info-item">
+            <div className="profile-info-item">
               <label>Email</label>
               <span>{user?.email}</span>
               <label>Username</label>
