@@ -53,7 +53,7 @@ export default function Sidebar({ history, isLoading, error }) {
         
         {error ? (
           <div className="history-error">
-            Failed to load history. Please try again.
+            {error}
           </div>
         ) : isLoading ? (
           <Loading inline />
