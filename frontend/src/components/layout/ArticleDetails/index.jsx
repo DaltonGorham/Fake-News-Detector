@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { HiX, HiExternalLink, HiCalendar, HiNewspaper } from 'react-icons/hi';
 import { articleApi } from '../../../api/articles';
 import Loading from '../../common/Loading';
+import TruthnessGauge from '../../common/TruthnessGauge';
 import { createCache, cachedFetch } from '../../../util/cacheManager';
 import './styles.css';
 
@@ -97,12 +98,10 @@ export default function ArticleDetails({ articleId, isOpen, onClose }) {
         ) : article ? (
           <div className="article-details-content">
             <div className={`score-header ${truthnessClass}`}>
-              <div className="score-wrapper">
-                <div className="score-label">{aiResult?.truthness_label || 'UNKNOWN'}</div>
-                <div className="score-value">
-                  {aiResult?.truthness_score ? `${(aiResult.truthness_score * 100).toFixed(0)}%` : 'N/A'}
-                </div>
-              </div>
+              <TruthnessGauge 
+                score={score}
+                label={aiResult?.truthness_label}
+              />
               {getConfidenceMessage() && (
                 <div className="confidence-message">{getConfidenceMessage()}</div>
               )}
