@@ -1,19 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from './useAuth';
 import { userApi } from '../api/user';
+import { createCache, cachedFetch, resetCache } from '../util/cacheManager.js';
 
-/**
- * CACHING STRATEGY (Generated with AI assistance)
- * 
- * This caching solution helps prevent multiple API calls when useProfile() is called
- * by multiple components simultaneously. By deduplicating in-flight requests with
- * initPromise, we ensure only one profile API call happens at a time.
- */
-const profileCache = {
-  data: null,
-  isInitialized: false,
-  initPromise: null
-};
+const profileCache = createCache(null);
 
 export function useProfile() {
   const [profile, setProfile] = useState(profileCache.data);
@@ -28,7 +18,7 @@ export function useProfile() {
     const initializeProfile = async () => {
       if (!user) {
         setProfile(null);
-        profileCache.data = null;
+        resetCache(profileCache, null);
         hasInitializedRef.current = false;
         return;
       }
@@ -36,57 +26,39 @@ export function useProfile() {
       // If already initialized, use cache
       if (hasInitializedRef.current) {
         setProfile(profileCache.data);
-        setIsLoading(false);
         return;
       }
 
-      // If currently initializing, wait for it
-      if (profileCache.initPromise) {
-        try {
-          const data = await profileCache.initPromise;
-          if (isMounted) {
-            setProfile(data);
-            setIsLoading(false);
-          }
-        } catch (err) {
-          if (isMounted) {
-            setError(err.message);
-            setIsLoading(false);
-          }
-        }
-        return;
-      }
-
-      // Start initialization
       setIsLoading(true);
 
-      const initPromise = (async () => {
-        try {
-          setError(null);
-          const { data, error } = await userApi.getProfile();
-          
-          if (error) throw error;
-          
-          profileCache.data = data;
-          if (isMounted) {
-            setProfile(data);
+      try {
+        await cachedFetch(
+          profileCache,
+          async () => {
+            const { data, error } = await userApi.getProfile();
+            if (error) throw new Error(error);
+            return data;
+          },
+          {
+            onSuccess: (data) => {
+              if (isMounted) {
+                setProfile(data);
+                setError(null);
+                hasInitializedRef.current = true;
+              }
+            },
+            onError: (err) => {
+              if (isMounted) {
+                setError(err.message);
+              }
+            }
           }
-          return data;
-        } catch (err) {
-          if (isMounted) {
-            setError(err.message);
-          }
-          throw err;
-        } finally {
-          if (isMounted) {
-            setIsLoading(false);
-          }
-          profileCache.initPromise = null;
-          hasInitializedRef.current = true;
+        );
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
         }
-      })();
-
-      profileCache.initPromise = initPromise;
+      }
     };
 
     initializeProfile();
