@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
+import { parseApiError, handleNetworkError } from '../util/errorHandler';
 
 // Base URL for the API, configurable via environment variable
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -43,13 +44,15 @@ export const apiClient = async (endpoint, options = {}) => {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, requestConfig);
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      const errorMessage = await parseApiError(response);
+      return { data: null, error: errorMessage };
     }
 
     const data = await response.json();
     return { data, error: null };
   } catch (error) {
     console.error('API Error:', error);
-    return { data: null, error: error.message };
+    const errorMessage = handleNetworkError(error);
+    return { data: null, error: errorMessage };
   }
 };
