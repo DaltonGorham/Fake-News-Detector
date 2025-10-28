@@ -101,11 +101,29 @@ class ArticleService:
             current_time = datetime.now().isoformat()
             ai_result = ArticleService.ai_analysis(article)
 
+            truthness_label = ""
+            genre = ""
+            truthness_score = 0
+
+            if ai_result["prediction"][0] > 0.7:
+                truthness_label = "Reliable"
+                genre = "Real News"
+                truthness_score = ai_result["prediction"][0]
+            else:
+                truthness_label = "Unreliable"
+                genre = "Fake News"
+                truthness_score = 1 - ai_result["prediction"][0]
+
             analysis = {
                 "input_by_user": user_id,
                 "created_at": current_time,
                 "article": article,
-                "ai_result": ai_result
+                "ai_result": {
+                    "genre" : genre,
+                    "truthness_label": truthness_label,
+                    "article_id" : ,
+                    "truthness_score": truthness_score
+                }
             }
 
             result = article_repository.save(analysis, user_jwt)
