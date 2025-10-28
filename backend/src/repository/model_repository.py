@@ -1,3 +1,4 @@
+from email.mime import base
 import os
 import pickle
 
@@ -6,12 +7,14 @@ def get_all():
 
 def get_vectorizer():
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join("../" + base_dir, "data", "vectorizer.pkl")
+    base_dir = base_dir.split("src")[0]
+    file_path = os.path.join(base_dir, "model", "vectorizer.pkl")
 
     return pickle.load(open(file_path, 'rb'))
 
 def get_model():
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join("../" + base_dir, "data", "model.pkl")
-    
+    base_dir = base_dir.split("src")[0]
+    file_path = os.path.join(base_dir, "model", "model.pkl")
+
     return pickle.load(open(file_path, 'rb'))

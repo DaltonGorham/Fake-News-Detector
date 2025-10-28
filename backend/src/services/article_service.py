@@ -74,14 +74,13 @@ class ArticleService:
             from ..repository.model_repository import get_all
             ArticleService.vectorizer, ArticleService.model = get_all()
 
-        text = "Headline: " + article.get("title", "") + " Content: " + article.get("text", "")
+        text = article.get("title", "") + " " + article.get("text", "")
 
         vectorized_text = ArticleService.vectorizer.transform([text])
         prediction = ArticleService.model.predict_proba(vectorized_text)
         return {
             "prediction": prediction[0]
         }
-
 
     @staticmethod
     def analyze_article(url: str, user_id: str):
@@ -164,3 +163,4 @@ if __name__ == "__main__":
     print(article)
     analysis = service.ai_analysis(article)
     print(analysis)
+    
