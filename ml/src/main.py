@@ -22,7 +22,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 
 from sklearn.feature_extraction.text import TfidfVectorizer
-from transformers import DistilBertTokenizer
+from transformers import DistilBertTokenizer, DistilBertModel
+import torch
 
 import modify_dataset
 
@@ -49,6 +50,11 @@ def create_embeddings_Transformer(train_X, val_X, test_X):
     train_encodings = tokenizer(train_X.tolist(), truncation=True, padding=True)
     val_encodings = tokenizer(val_X.tolist(), truncation=True, padding=True)
     test_encodings = tokenizer(test_X.tolist(), truncation=True, padding=True)
+
+    model = DistilBertModel.from_pretrained("distilbert-base-uncased")
+    train_encodings = model(torch.tensor(train_encodings['input_ids']))[0].detach().numpy()
+    val_encodings = model(torch.tensor(val_encodings['input_ids']))[0].detach().numpy()
+    test_encodings = model(torch.tensor(test_encodings['input_ids']))[0].detach().numpy()
 
     embeddings = {
         'train': train_encodings,
