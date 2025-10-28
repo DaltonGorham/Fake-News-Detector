@@ -1,7 +1,4 @@
-from datetime import datetime, timedelta
-import random
-import stat
-from turtle import pu
+from datetime import datetime
 from newspaper import Article
 from fastapi import HTTPException
 from ..repository import article_repository
@@ -121,8 +118,8 @@ class ArticleService:
                 "ai_result": {
                     "genre" : genre,
                     "truthness_label": truthness_label,
-                    "article_id" : ,
-                    "truthness_score": truthness_score
+                    "truthness_score": truthness_score,
+                    "related_articles": []
                 }
             }
 
