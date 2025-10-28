@@ -1,9 +1,12 @@
-from datetime import datetime, timedelta
-import random
+from datetime import datetime
+from newspaper import Article
 from fastapi import HTTPException
 from ..repository import article_repository
 
 class ArticleService:
+    vectorizer = None
+    model = None
+
     @staticmethod
     def get_article_history(user_id: str, user_jwt: str = None):
         """Get all articles in the history for a user"""
@@ -33,6 +36,48 @@ class ArticleService:
                     "error": str(e)
                 }
             )
+        
+    @staticmethod
+    def pull_article(url: str):
+        """Pull article content from a URL"""
+        try:
+            article = Article(url)
+            article.download()
+            article.parse()
+
+            current_time = datetime.now().isoformat()
+
+            return {
+                "url": url,
+                "source": url.split('/')[2] if '://' in url else 'Unknown Source',
+                "title": article.title,
+                "authors": article.authors,
+                "collected_date": current_time,
+                "publish_date": article.publish_date.isoformat() if article.publish_date else None,
+                "text": article.text,
+            }
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "message": "Failed to pull article",
+                    "error": str(e)
+                }
+            )
+        
+    @staticmethod
+    def ai_analysis(article: dict):
+        if ArticleService.vectorizer is None or ArticleService.model is None:
+            from ..repository.model_repository import get_all
+            ArticleService.vectorizer, ArticleService.model = get_all()
+
+        text = article.get("title", "") + " " + article.get("text", "")
+
+        vectorized_text = ArticleService.vectorizer.transform([text])
+        prediction = ArticleService.model.predict_proba(vectorized_text)
+        return {
+            "prediction": prediction[0]
+        }
 
     @staticmethod
     def analyze_article(url: str, user_id: str, user_jwt: str = None):
@@ -44,32 +89,36 @@ class ArticleService:
                 status_code=409,
                 detail={
                     "message": "Article already analyzed",
-                    "error": "This URL has already been analyzed by you"
+                    "error": "This URL has already been analyzed"
                 }
             )
         
         try:
-            # In a real implementation, this would call an AI service
-            # For now, we'll use mock AI results
+            article = ArticleService.pull_article(url)
             current_time = datetime.now().isoformat()
-            published_date = (datetime.now() - timedelta(days=random.randint(1, 30))).isoformat()
-            
+            ai_result = ArticleService.ai_analysis(article)
+
+            truthness_label = ""
+            genre = ""
+            truthness_score = 0
+
+            if ai_result["prediction"][0] > 0.7:
+                truthness_label = "Reliable"
+                genre = "Real News"
+                truthness_score = ai_result["prediction"][0]
+            else:
+                truthness_label = "Unreliable"
+                genre = "Fake News"
+                truthness_score = 1 - ai_result["prediction"][0]
+
             analysis = {
                 "input_by_user": user_id,
                 "created_at": current_time,
-                "article": {
-                    "url": url,
-                    "title": f"Testing Article",
-                    "source": url.split('/')[2] if '://' in url else 'Unknown Source',
-                    "collected_date": current_time,
-                    "published_date": published_date,
-                    "author": "Unknown Author",  # Would be extracted in real implementation
-                    "content": None  # Would be extracted in real implementation
-                },
+                "article": article,
                 "ai_result": {
-                    "genre": random.choice(["News", "Technology", "Science"]),
-                    "truthness_label": random.choice(["RELIABLE", "UNRELIABLE"]),
-                    "truthness_score": round(random.uniform(0, 1), 2),
+                    "genre" : genre,
+                    "truthness_label": truthness_label,
+                    "truthness_score": truthness_score,
                     "related_articles": []
                 }
             }
@@ -123,3 +172,12 @@ class ArticleService:
             )
 
 article_service = ArticleService()
+
+if __name__ == "__main__":
+    test_url = "https://theonion.com/zohran-mamdani-refuses-to-share-plan-for-making-rich-richer/"
+    service = ArticleService()
+    article = service.pull_article(test_url)
+    print(article)
+    analysis = service.ai_analysis(article)
+    print(analysis)
+    
