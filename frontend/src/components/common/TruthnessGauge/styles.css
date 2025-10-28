@@ -1,0 +1,27 @@
+.truthness-gauge {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 10px 20px 20px;
+}
+
+.gauge-content {
+  text-align: center;
+  margin-top: -30px;
+}
+
+.gauge-score {
+  font-size: 36px;
+  font-weight: 700;
+  color: #e0e0e0;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.gauge-label {
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #e0e0e0;
+}
