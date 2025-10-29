@@ -102,14 +102,18 @@ class ArticleService:
             genre = ""
             truthness_score = 0
 
-            if ai_result["prediction"][0] > 0.7:
+            # prediction[0] = probability of real, prediction[1] = probability of fake
+            # Use prediction[0] directly as the real probability
+            real_probability = ai_result["prediction"][0]
+
+            if real_probability > 0.60:
                 truthness_label = "Reliable"
                 genre = "Real News"
-                truthness_score = ai_result["prediction"][0]
+                truthness_score = real_probability
             else:
                 truthness_label = "Unreliable"
                 genre = "Fake News"
-                truthness_score = 1 - ai_result["prediction"][0]
+                truthness_score = real_probability
 
             analysis = {
                 "input_by_user": user_id,
@@ -174,7 +178,7 @@ class ArticleService:
 article_service = ArticleService()
 
 if __name__ == "__main__":
-    test_url = "https://theonion.com/zohran-mamdani-refuses-to-share-plan-for-making-rich-richer/"
+    test_url = "https://www.whitehouse.gov/articles/2025/10/top-democrat-cheers-americans-suffering-as-leverage-in-their-sick-political-game/"
     service = ArticleService()
     article = service.pull_article(test_url)
     print(article)
