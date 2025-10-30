@@ -11,11 +11,23 @@ function AppRoutes() {
   const [loading, setLoading] = useState(true);
 
   const handleAuthChange = (event, session) => {
-    // dont redirect anywhere if we're on the verify page
-    // this is meant to be a static page to be closed after verification
-    if (window.location.pathname === '/verify') {
+    // Check if we're on verify page or if URL has email verification tokens
+    const isVerifyPage = window.location.pathname === '/verify';
+    const hasVerificationTokens = window.location.hash.includes('access_token') && 
+                                   (window.location.hash.includes('type=signup') || 
+                                    window.location.hash.includes('type=recovery'));
+    
+    // Don't redirect if we're on the verify page
+    if (isVerifyPage) {
       return;
     }
+    
+    // If URL has verification tokens, go to verify page instead of dashboard
+    if (hasVerificationTokens) {
+      navigate("/verify", { replace: true });
+      return;
+    }
+    
     if (event === 'SIGNED_IN' && session) {
       navigate("/dashboard");
     } else if (event === 'SIGNED_OUT' || !session) {
