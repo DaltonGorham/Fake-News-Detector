@@ -30,9 +30,15 @@ export default function TruthnessGauge({ score, label }) {
           width: 0.3,
           padding: 0,
           cornerRadius: 1,
-          subArcs: [
+          subArcs: displayPercent >= 1 ? [
             {
-              limit: displayPercent * 100,
+              limit: 100,
+              color: getMeterColor(),
+              showTick: false
+            }
+          ] : [
+            {
+              limit: Math.max(displayPercent * 100, 1),
               color: getMeterColor(),
               showTick: false
             },

@@ -24,8 +24,56 @@
   color: #e1e8ed;
 }
 
-.modal input {
+.input-group {
+  width: 100%;
   margin: 12px 0;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+/*
+  I honestly have no idea why this styles arent applying here
+  Using !important is stupid but it doesnt work unless i do it
+*/
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  outline: none !important;
+  box-shadow: none !important;
+  line-height: 1;
+}
+
+.toggle-password:hover,
+.toggle-password:focus,
+.toggle-password:active {
+  background: transparent !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.4);
+  outline: none !important;
+  box-shadow: none !important;
+  transform: translateY(-50%) !important;
+}
+
+
+.password-input-wrapper input {
+  padding-right: 44px;
+}
+
+.modal input {
   padding: 12px 14px;
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -35,11 +83,57 @@
   color: #e1e8ed;
   transition: all 0.2s;
   outline: none;
+  box-sizing: border-box;
 }
 
 .modal input:focus {
   border-color: rgba(76, 110, 245, 0.5);
   background: rgba(255, 255, 255, 0.1);
+}
+
+.modal input.error {
+  border-color: #ef4444;
+}
+
+.input-group .error-message {
+  display: block;
+  color: #ef4444 !important;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.input-hint {
+  display: block;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.password-strength {
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.strength-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.strength-fill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: 2px;
+}
+
+.strength-label {
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .modal-buttons {

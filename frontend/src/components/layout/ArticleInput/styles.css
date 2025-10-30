@@ -38,6 +38,11 @@
   transition: all 0.2s ease;
 }
 
+.article-url-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .article-url-input:focus {
   border-color: rgba(76, 110, 245, 0.5);
   background: rgba(30, 39, 50, 0.8);

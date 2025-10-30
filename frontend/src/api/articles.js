@@ -24,6 +24,13 @@ export const articleApi = {
     });
   },
 
+  // Clear history
+  clearHistory: async () => {
+    return await apiClient('/api/v1/articles/history', {
+      method: 'DELETE'
+    });
+  },
+
   // Get specific article analysis
   getAnalysis: async (articleId) => {
     if (!articleId) {
