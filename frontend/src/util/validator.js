@@ -16,7 +16,7 @@ export const validateUrl = (url) => {
     const isLocal = ['localhost', '127.0.0.1', '0.0.0.0'].some(local => 
       urlObj.hostname.includes(local)
     );
-    if (isLocal && process.env.NODE_ENV === 'production') {
+    if (isLocal) {
       throw new Error('Cannot analyze local URLs');
     }
     
