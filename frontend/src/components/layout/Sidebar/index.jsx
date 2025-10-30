@@ -32,6 +32,7 @@ export default function Sidebar({ history, isLoading, error, onHistoryChange }) 
   const [sortBy, setSortBy] = useState('date');
   const [isClearing, setIsClearing] = useState(false);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [clearError, setClearError] = useState(null);
   const { user, logout } = useAuth();
   const { profile, refreshProfile } = useProfile();
   const searchInputRef = useRef(null);
@@ -100,16 +101,17 @@ export default function Sidebar({ history, isLoading, error, onHistoryChange }) 
   const handleConfirmClearHistory = async () => {
     setShowClearConfirm(false);
     setIsClearing(true);
+    setClearError(null);
     try {
       const { error } = await articleApi.clearHistory();
       if (error) {
-        alert(`Failed to clear history: ${error}`);
+        setClearError(error);
       } else {
         // Refresh the history to show empty state
         onHistoryChange?.();
       }
     } catch (err) {
-      alert(`Failed to clear history: ${err.message}`);
+      setClearError(err.message);
     } finally {
       setIsClearing(false);
     }
@@ -193,6 +195,12 @@ export default function Sidebar({ history, isLoading, error, onHistoryChange }) 
             </div>
           </div>
         </div>
+        
+        {clearError && (
+          <div className="clear-error-message">
+            Failed to clear history: {clearError}
+          </div>
+        )}
         
         {error ? (
           <div className="history-error">
