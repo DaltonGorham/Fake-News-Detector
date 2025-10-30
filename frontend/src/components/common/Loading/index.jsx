@@ -1,8 +1,8 @@
 import './styles.css'
 
-const Loading = () => {
+const Loading = ({ inline = false }) => {
   return (
-    <div className="loading-container">
+    <div className={inline ? "loading-container-inline" : "loading-container"}>
       <div className="loading-spinner"></div>
       <div className="loading-text">Loading</div>
     </div>

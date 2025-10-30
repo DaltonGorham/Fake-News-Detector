@@ -14,8 +14,6 @@ export const userApi = {
     return { data, error: null };
   },
 
-
-  // keep this on the backend API
   uploadAvatar: async (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -26,12 +24,15 @@ export const userApi = {
     });
   },
 
-  // needs to update both auth metadata and Users table
-  // this will further expanded in the profile settings
   updateProfile: async (updates) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) throw new Error('User not authenticated');
+    
     const { data, error } = await supabase
       .from('Users')
       .update(updates)
+      .eq('id', user.id)
       .select()
       .single();
     
