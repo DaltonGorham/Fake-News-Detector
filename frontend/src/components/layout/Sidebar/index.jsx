@@ -17,6 +17,12 @@ import {
 import './styles.css';
   
 export default function Sidebar({ history, isLoading, error, onHistoryChange }) {
+  /*
+    TODO:
+    This a lotttt of state here. Perhaps we break this into another component?
+    Its easy to find all right here but this is just confusing and hard
+    debug if something goes wrong
+  */
   const [isOpen, setIsOpen] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [selectedArticleId, setSelectedArticleId] = useState(null);
@@ -36,6 +42,7 @@ export default function Sidebar({ history, isLoading, error, onHistoryChange }) 
     }
   });
 
+  // using usememo doesnt run the filtering on every render. 
   const filteredHistory = useMemo(() => {
     let filtered = [...history];
 
