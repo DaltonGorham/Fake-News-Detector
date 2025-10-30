@@ -37,36 +37,7 @@ export function useArticleHistory() {
 
           if (apiError) throw new Error(apiError);
           
-          // If no data from API yet, use one mock article
-          if (!response || !response.data || response.data.length === 0) {
-            return [{
-              id: 1,
-              created_at: new Date().toISOString(),
-              history_index: 1,
-              input_by_user: user?.id,
-              article: {
-                id: 101,
-                published_date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-                collected_date: new Date().toISOString(),
-                url: "https://example.com/nasa-mars",
-                content: "NASA scientists have discovered evidence of ancient microbial life on Mars...",
-                title: "NASA Makes Groundbreaking Discovery on Mars",
-                author: "John Smith",
-                source: "Space.com",
-                ai_result: [{
-                  id: 201,
-                  genre: "Science",
-                  truthness_label: "RELIABLE",
-                  truthness_score: 0.92,
-                  related_articles: [],
-                  article_id: 101,
-                  ai_id: 1
-                }]
-              }
-            }];
-          }
-          
-          return response.data;
+          return response?.data || [];
         },
         {
           onSuccess: (data) => {

@@ -113,7 +113,18 @@ export function useAuth() {
       });
 
       if (error) {
+        // Handle unique constraint violation from database trigger
+        if (error.message?.includes('users_username_unique') || 
+            error.message?.includes('duplicate key') ||
+            error.message?.includes('Database error saving new user')) {
+          return handleError(new Error(`${username} is already taken`), '');
+        }
         return handleError(error, 'Signup failed: ');
+      }
+
+      // Supabase returns user even if email exists 
+      if (data.user && data.user.identities && data.user.identities.length === 0) {
+        return handleError(new Error('Email already registered'), '');
       }
 
       setPendingEmailVerification(email);

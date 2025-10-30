@@ -11,6 +11,7 @@ export default function MainPage() {
         history={history}
         isLoading={isLoading}
         error={error}
+        onHistoryChange={refreshHistory}
       />
       <div className="content-wrapper">
         <ArticleInput onArticleSubmitted={refreshHistory} />

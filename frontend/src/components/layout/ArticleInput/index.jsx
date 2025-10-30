@@ -29,6 +29,7 @@ export default function ArticleInput({ onArticleSubmitted }) {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder="Enter a URL to analyze"
+            disabled={loading}
           />
           
           <button 
