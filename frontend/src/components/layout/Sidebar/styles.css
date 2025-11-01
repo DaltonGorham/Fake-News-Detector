@@ -79,6 +79,7 @@
 .sidebar-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -199,11 +200,9 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  padding: 0 8px;
-}
-
-.filter-group {
+  padding: 8px;
   color: rgba(255, 255, 255, 0.6);
+  min-width: 0;
 }
 
 .filter-select,
@@ -212,10 +211,12 @@
   background: transparent;
   border: none;
   color: #fff;
-  font-size: 13px;
-  padding: 8px 4px;
+  font-size: 12px;
+  padding: 0;
+  padding-right: 4px;
   cursor: pointer;
   outline: none;
+  min-width: 0;
 }
 
 .filter-select option,
@@ -352,68 +353,5 @@
 }
 
 .sidebar-footer {
-  padding: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.user-button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.user-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.user-avatar {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  min-height: 36px;
-  background: #4c6ef5;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-.user-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.username {
-  font-size: 16px;
-  font-weight: 500;
-  transition: font-size 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-  text-align: left;
-  min-width: 0;
-}
-
-.username-short {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.username-long {
-  font-size: 14px;
-  font-weight: 400;
+  padding: 0;
 }

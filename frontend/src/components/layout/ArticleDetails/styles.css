@@ -132,15 +132,15 @@
 }
 
 .score-header {
-  padding: 32px 40px 24px;
+  padding: 16px 32px 12px;
   background: #2a2a2a;
   border-bottom: 1px solid #333;
   text-align: center;
 }
 
 .confidence-message {
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 4px;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
   letter-spacing: 0.3px;
@@ -151,7 +151,7 @@
 }
 
 .article-body {
-  padding: 32px 40px 40px;
+  padding: 20px 32px 24px;
   text-align: center;
 }
 
@@ -174,11 +174,11 @@
 }
 
 .article-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.4;
   color: #b0b0b0;
-  margin: 0 0 28px 0;
+  margin: 0 0 20px 0;
 }
 
 .link-text {
@@ -190,15 +190,15 @@
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 32px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .info-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 16px;
+  padding: 10px 12px;
   background: #2a2a2a;
   border-radius: 8px;
   border: 1px solid #333;
@@ -227,35 +227,35 @@
 }
 
 .related-section {
-  padding-top: 28px;
+  padding-top: 20px;
   border-top: 1px solid #333;
   text-align: left;
 }
 
 .section-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: #e0e0e0;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
   text-align: center;
 }
 
 .related-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .related-item {
   display: block;
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: #2a2a2a;
   border: 1px solid #333;
   border-radius: 8px;
   text-decoration: none;
   color: #e0e0e0;
   transition: all 0.2s ease;
-  font-size: 14px;
+  font-size: 13px;
   text-align: center;
 }
 
@@ -285,37 +285,35 @@
   background: #555;
 }
 
-@media (max-width: 640px) {
-  .article-details-overlay {
-    padding: 12px;
-  }
+.footnotes-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-  .article-details-modal {
-    max-height: 92vh;
-  }
+.footnote {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
 
-  .score-header {
-    padding: 24px 24px;
-  }
+.footnote strong {
+  display: block;
+  margin-bottom: 3px;
+}
 
-  .score-label {
-    font-size: 16px;
-  }
+.satire-warning {
+  background: rgba(255, 193, 7, 0.08);
+  border: 1px solid rgba(255, 193, 7, 0.25);
+  color: #ffc107;
+}
 
-  .score-value {
-    font-size: 28px;
-  }
-
-  .article-body {
-    padding: 24px;
-  }
-
-  .article-title {
-    font-size: 20px;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+.ai-disclaimer {
+  background: rgba(158, 158, 158, 0.08);
+  border: 1px solid rgba(158, 158, 158, 0.25);
+  color: #b0b0b0;
 }

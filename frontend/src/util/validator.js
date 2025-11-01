@@ -75,8 +75,8 @@ export const validateUsername = (username) => {
     throw new Error('Username must be at least 3 characters long');
   }
   
-  if (username.length > 15) {
-    throw new Error('Username must be 15 characters or less');
+  if (username.length > 20) {
+    throw new Error('Username must be 20 characters or less');
   }
   
   if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
