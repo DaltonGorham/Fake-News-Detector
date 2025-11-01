@@ -24,7 +24,8 @@ def get_all(user_id: str, user_jwt: str = None):
                     genre,
                     truthness_label,
                     truthness_score,
-                    related_articles
+                    related_articles,
+                    is_satire
                 )
             )
         ''') \
@@ -51,7 +52,8 @@ def get_by_id(article_id: int, user_jwt: str = None):
                 genre,
                 truthness_label,
                 truthness_score,
-                related_articles
+                related_articles,
+                is_satire
             )
         ''') \
         .eq('id', article_id) \
@@ -74,13 +76,14 @@ def save(analysis_data: dict, user_jwt: str = None):
     article_response = supabase_admin_client.table('Article').insert(article_data).execute()
     article_id = article_response.data[0]['id']
 
-    # SQL: INSERT INTO "AI Result" (article_id, genre, truthness_label, truthness_score, related_articles)
+    # SQL: INSERT INTO "AI Result" (article_id, genre, truthness_label, truthness_score, related_articles, is_satire)
     ai_result_data = {
         'article_id': article_id,
         'genre': analysis_data['ai_result']['genre'],
         'truthness_label': analysis_data['ai_result']['truthness_label'],
         'truthness_score': analysis_data['ai_result']['truthness_score'],
-        'related_articles': analysis_data['ai_result']['related_articles']
+        'related_articles': analysis_data['ai_result']['related_articles'],
+        'is_satire': analysis_data['ai_result'].get('is_satire', False)
     }
     ai_result_response = supabase_admin_client.table('AI Result').insert(ai_result_data).execute()
     ai_result_id = ai_result_response.data[0]['id']
