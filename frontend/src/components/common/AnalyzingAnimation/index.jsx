@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import PacmanAnimation from './PacmanAnimation';
 import DotsAnimation from './DotsAnimation';
-import HackerAnimation from './HackerAnimation';
 import './styles.css';
 
 export default function AnalyzingAnimation() {
@@ -17,7 +16,7 @@ export default function AnalyzingAnimation() {
   
   // Randomly select animation once on mount
   const AnimationComponent = useMemo(() => {
-    const animations = [HackerAnimation, PacmanAnimation, DotsAnimation];
+    const animations = [PacmanAnimation, DotsAnimation];
     return animations[Math.floor(Math.random() * animations.length)];
   }, []);
 
