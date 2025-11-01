@@ -3,10 +3,8 @@ import { useAuth } from '../../../hooks/useAuth';
 import { useProfile } from '../../../hooks/useProfile';
 import UserMenu from '../UserMenu';
 import HistoryPanel from './HistoryPanel';
-import { 
-  HiX, 
-  HiMenu
-} from 'react-icons/hi';
+import UserButton from './UserButton';
+import { HiX, HiMenu } from 'react-icons/hi';
 import './styles.css';
   
 export default function Sidebar({ history, isLoading, error, onHistoryChange }) {
@@ -15,11 +13,15 @@ export default function Sidebar({ history, isLoading, error, onHistoryChange }) 
   const { user, logout } = useAuth();
   const { profile, refreshProfile } = useProfile();
 
+  const toggleSidebar = () => setIsOpen(!isOpen);
+  const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
+  const closeUserMenu = () => setIsUserMenuOpen(false);
+
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
       <button 
         className="sidebar-toggle" 
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleSidebar}
         aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
       >
         {isOpen ? <HiX size={24} /> : <HiMenu size={24} />}
@@ -35,32 +37,14 @@ export default function Sidebar({ history, isLoading, error, onHistoryChange }) 
       </div>
 
       <div className="sidebar-footer">
-        <button 
-          className="user-button"
-          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-        >
-          <div className="user-avatar">
-            {profile?.avatar_url ? (
-              <img src={profile.avatar_url} alt="User avatar" />
-            ) : (
-              (profile?.username?.[0] || user?.email?.[0] || '?').toUpperCase()
-            )}
-          </div>
-          <span className={`username ${
-            profile?.username 
-              ? profile.username.length <= 12 
-                ? 'username-short'
-                : profile.username.length >= 20 
-                  ? 'username-long' 
-                  : ''
-              : ''
-          }`}>
-            {profile?.username || 'Your Account'}
-          </span>
-        </button>
+        <UserButton 
+          profile={profile}
+          user={user}
+          onClick={toggleUserMenu}
+        />
         <UserMenu 
           isOpen={isUserMenuOpen} 
-          onClose={() => setIsUserMenuOpen(false)} 
+          onClose={closeUserMenu}
           user={user}
           profile={profile}
           logout={logout}
