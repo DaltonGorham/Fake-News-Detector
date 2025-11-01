@@ -8,7 +8,8 @@ import {
   HiX, 
   HiSearch,
   HiFilter,
-  HiTrash
+  HiTrash,
+  HiSortDescending
 } from 'react-icons/hi';
 
 export default function HistoryPanel({ history, isLoading, error, onHistoryChange }) {
@@ -160,6 +161,7 @@ export default function HistoryPanel({ history, isLoading, error, onHistoryChang
           </div>
 
           <div className="sort-group">
+            <HiSortDescending size={16} />
             <select 
               value={sortBy} 
               onChange={(e) => setSortBy(e.target.value)}

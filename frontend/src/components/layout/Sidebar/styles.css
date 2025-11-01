@@ -79,6 +79,7 @@
 .sidebar-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -199,11 +200,9 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  padding: 0 8px;
-}
-
-.filter-group {
+  padding: 8px;
   color: rgba(255, 255, 255, 0.6);
+  min-width: 0;
 }
 
 .filter-select,
@@ -212,10 +211,12 @@
   background: transparent;
   border: none;
   color: #fff;
-  font-size: 13px;
-  padding: 8px 4px;
+  font-size: 12px;
+  padding: 0;
+  padding-right: 4px;
   cursor: pointer;
   outline: none;
+  min-width: 0;
 }
 
 .filter-select option,
