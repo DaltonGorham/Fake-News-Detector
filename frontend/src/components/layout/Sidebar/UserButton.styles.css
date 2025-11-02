@@ -1,0 +1,79 @@
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 12px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 6px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.user-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.username {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  min-width: 0;
+  transition: font-size 0.2s ease;
+}
+
+.username-short {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.username-long {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .user-button {
+    padding: 14px 10px;
+    gap: 10px;
+  }
+  
+  .username {
+    font-size: 14px;
+  }
+  
+  .username-short {
+    font-size: 16px;
+  }
+  
+  .username-long {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .user-button {
+    padding: 12px 10px;
+  }
+  
+  .username {
+    font-size: 13px;
+  }
+  
+  .username-short {
+    font-size: 15px;
+  }
+  
+  .username-long {
+    font-size: 11px;
+  }
+}

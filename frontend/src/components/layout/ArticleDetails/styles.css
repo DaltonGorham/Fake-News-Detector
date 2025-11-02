@@ -132,15 +132,15 @@
 }
 
 .score-header {
-  padding: 32px 40px 24px;
+  padding: 16px 32px 12px;
   background: #2a2a2a;
   border-bottom: 1px solid #333;
   text-align: center;
 }
 
 .confidence-message {
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 4px;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
   letter-spacing: 0.3px;
@@ -151,7 +151,7 @@
 }
 
 .article-body {
-  padding: 32px 40px 40px;
+  padding: 20px 32px 24px;
   text-align: center;
 }
 
@@ -174,11 +174,11 @@
 }
 
 .article-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.4;
   color: #b0b0b0;
-  margin: 0 0 28px 0;
+  margin: 0 0 20px 0;
 }
 
 .link-text {
@@ -190,15 +190,15 @@
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 32px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .info-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 16px;
+  padding: 10px 12px;
   background: #2a2a2a;
   border-radius: 8px;
   border: 1px solid #333;
@@ -227,35 +227,35 @@
 }
 
 .related-section {
-  padding-top: 28px;
+  padding-top: 20px;
   border-top: 1px solid #333;
   text-align: left;
 }
 
 .section-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: #e0e0e0;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
   text-align: center;
 }
 
 .related-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .related-item {
   display: block;
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: #2a2a2a;
   border: 1px solid #333;
   border-radius: 8px;
   text-decoration: none;
   color: #e0e0e0;
   transition: all 0.2s ease;
-  font-size: 14px;
+  font-size: 13px;
   text-align: center;
 }
 
@@ -285,37 +285,341 @@
   background: #555;
 }
 
-@media (max-width: 640px) {
-  .article-details-overlay {
-    padding: 12px;
-  }
+.footnotes-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
+.footnote {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.footnote strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.satire-warning {
+  background: rgba(255, 193, 7, 0.08);
+  border: 1px solid rgba(255, 193, 7, 0.25);
+  color: #ffc107;
+}
+
+.ai-disclaimer {
+  background: rgba(158, 158, 158, 0.08);
+  border: 1px solid rgba(158, 158, 158, 0.25);
+  color: #b0b0b0;
+}
+
+/* Tablet/iPad (1024px - 768px) */
+@media (max-width: 1024px) and (min-width: 769px) {
   .article-details-modal {
-    max-height: 92vh;
+    max-width: 700px;
   }
-
-  .score-header {
-    padding: 24px 24px;
+  
+  .article-details-header {
+    padding: 22px;
   }
-
-  .score-label {
-    font-size: 16px;
+  
+  .article-details-title {
+    font-size: 26px;
   }
-
-  .score-value {
-    font-size: 28px;
+  
+  .article-source {
+    font-size: 15px;
   }
-
-  .article-body {
-    padding: 24px;
+  
+  .article-details-content {
+    padding: 22px;
   }
+  
+  .section-title {
+    font-size: 19px;
+  }
+  
+  .article-description,
+  .summary-paragraph,
+  .reason-item-content {
+    font-size: 15px;
+  }
+  
+  .footnote {
+    font-size: 13px;
+  }
+}
 
-  .article-title {
+@media (max-width: 768px) {
+  .article-details-overlay {
+    padding: 15px;
+  }
+  
+  .article-details-modal {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 10px;
+  }
+  
+  .article-details-header {
+    padding: 16px;
+  }
+  
+  .article-details-title {
     font-size: 20px;
   }
+  
+  .article-source {
+    font-size: 13px;
+  }
+  
+  .article-details-content {
+    padding: 16px;
+  }
+  
+  .section-title {
+    font-size: 16px;
+  }
+  
+  .footnote {
+    font-size: 12px;
+  }
+}
 
+@media (max-width: 640px) {
+  .article-details-overlay {
+    padding: 10px;
+  }
+  
+  .article-details-modal {
+    border-radius: 8px;
+    max-height: 95vh;
+  }
+  
+  .article-details-header {
+    padding: 12px;
+  }
+  
+  .article-details-title {
+    font-size: 16px;
+    padding-right: 35px;
+  }
+  
+  .article-source {
+    font-size: 11px;
+  }
+  
+  .close-button {
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .article-details-content {
+    padding: 12px;
+  }
+  
+  .score-header {
+    padding: 12px 16px 10px;
+  }
+  
+  .confidence-message {
+    font-size: 11px;
+  }
+  
+  .article-body {
+    padding: 14px 16px 16px;
+  }
+  
+  .article-link {
+    font-size: 14px;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  
+  .article-title {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  
   .info-grid {
+    gap: 8px;
+    margin-bottom: 14px;
     grid-template-columns: 1fr;
+  }
+  
+  .info-item {
+    padding: 8px 10px;
+  }
+  
+  .info-label {
+    font-size: 10px;
+  }
+  
+  .info-value {
+    font-size: 12px;
+  }
+  
+  .related-section {
+    padding-top: 14px;
+  }
+  
+  .section-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .related-list {
+    gap: 6px;
+  }
+  
+  .related-item {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  
+  .footnotes-section {
+    margin-top: 12px;
+    padding-top: 12px;
     gap: 12px;
+  }
+  
+  .footnote {
+    font-size: 10px;
+    padding: 8px;
+  }
+  
+  .error-title {
+    font-size: 16px;
+  }
+  
+  .error-message {
+    font-size: 12px;
+  }
+  
+  .retry-button {
+    font-size: 12px;
+    padding: 8px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-details-overlay {
+    padding: 5px;
+  }
+  
+  .article-details-modal {
+    border-radius: 6px;
+  }
+  
+  .article-details-header {
+    padding: 10px;
+  }
+  
+  .article-details-title {
+    font-size: 15px;
+  }
+  
+  .article-source {
+    font-size: 10px;
+  }
+  
+  .close-button {
+    width: 28px;
+    height: 28px;
+    top: 8px;
+    right: 8px;
+  }
+  
+  .article-details-content {
+    padding: 10px;
+  }
+  
+  .score-header {
+    padding: 10px 12px 8px;
+  }
+  
+  .confidence-message {
+    font-size: 10px;
+  }
+  
+  .article-body {
+    padding: 12px 12px 14px;
+  }
+  
+  .article-link {
+    font-size: 13px;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  
+  .article-title {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  
+  .info-grid {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  
+  .info-item {
+    padding: 7px 8px;
+  }
+  
+  .info-label {
+    font-size: 9px;
+  }
+  
+  .info-value {
+    font-size: 11px;
+  }
+  
+  .related-section {
+    padding-top: 12px;
+  }
+  
+  .section-title {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  
+  .related-list {
+    gap: 5px;
+  }
+  
+  .related-item {
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+  
+  .footnotes-section {
+    margin-top: 10px;
+    padding-top: 10px;
+    gap: 10px;
+  }
+  
+  .footnote {
+    font-size: 9px;
+    padding: 6px;
+  }
+  
+  .error-title {
+    font-size: 15px;
+  }
+  
+  .error-message {
+    font-size: 11px;
+  }
+  
+  .retry-button {
+    font-size: 11px;
+    padding: 7px 16px;
   }
 }

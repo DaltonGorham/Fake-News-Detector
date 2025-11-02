@@ -286,3 +286,230 @@
   text-align: center;
   display: block;
 }
+
+/* Tablet/iPad (1024px - 768px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .profile-settings-modal {
+    max-width: 550px;
+  }
+  
+  .profile-settings-header {
+    padding: 22px;
+  }
+  
+  .profile-settings-title {
+    font-size: 22px;
+  }
+  
+  .profile-settings-content {
+    padding: 22px;
+  }
+  
+  .profile-info-label {
+    font-size: 15px;
+  }
+  
+  .profile-info-value,
+  .username-input {
+    font-size: 15px;
+    padding: 10px 12px;
+  }
+  
+  .profile-avatar-section {
+    padding: 18px;
+  }
+  
+  .profile-avatar-large {
+    width: 110px;
+    height: 110px;
+    font-size: 42px;
+  }
+  
+  .upload-button,
+  .remove-avatar-button {
+    font-size: 15px;
+    padding: 10px 18px;
+  }
+}
+
+/* Mobile (640px and below) */
+@media (max-width: 640px) {
+  .profile-settings-overlay {
+    padding: 10px;
+  }
+
+  .profile-settings-modal {
+    max-width: 360px;
+    border-radius: 10px;
+  }
+  
+  .profile-settings-header {
+    padding: 14px;
+  }
+  
+  .close-button {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .profile-settings-title {
+    font-size: 18px;
+  }
+  
+  .profile-settings-content {
+    padding: 14px;
+    gap: 14px;
+  }
+  
+  .profile-info-section {
+    gap: 12px;
+  }
+  
+  .profile-info-item {
+    gap: 6px;
+  }
+  
+  .profile-info-label {
+    font-size: 12px;
+  }
+  
+  .profile-info-value,
+  .username-input {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  
+  .username-actions {
+    gap: 6px;
+  }
+  
+  .username-edit-button,
+  .username-save-button,
+  .username-cancel-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .profile-info-item .username-error,
+  .profile-info-item .username-success {
+    font-size: 12px;
+  }
+  
+  .profile-avatar-section {
+    padding: 14px;
+  }
+  
+  .profile-avatar-large {
+    width: 90px;
+    height: 90px;
+    font-size: 34px;
+  }
+  
+  .avatar-buttons {
+    gap: 8px;
+    flex-direction: column;
+  }
+  
+  .upload-button,
+  .remove-avatar-button {
+    font-size: 13px;
+    padding: 8px 14px;
+    width: 100%;
+  }
+  
+  .upload-loading-text {
+    font-size: 13px;
+  }
+}
+
+/* Small mobile (480px and below) */
+@media (max-width: 480px) {
+  .profile-settings-overlay {
+    padding: 8px;
+  }
+
+  .profile-settings-modal {
+    max-width: 320px;
+    border-radius: 8px;
+  }
+  
+  .profile-settings-header {
+    padding: 12px;
+  }
+  
+  .close-button {
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+  }
+  
+  .profile-settings-title {
+    font-size: 16px;
+  }
+  
+  .profile-settings-content {
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .profile-info-section {
+    gap: 10px;
+  }
+  
+  .profile-info-item {
+    gap: 5px;
+  }
+  
+  .profile-info-label {
+    font-size: 11px;
+  }
+  
+  .profile-info-value,
+  .username-input {
+    font-size: 12px;
+    padding: 7px 9px;
+  }
+  
+  .username-actions {
+    gap: 5px;
+  }
+  
+  .username-edit-button,
+  .username-save-button,
+  .username-cancel-button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  
+  .profile-info-item .username-error,
+  .profile-info-item .username-success {
+    font-size: 11px;
+  }
+  
+  .profile-avatar-section {
+    padding: 12px;
+  }
+  
+  .profile-avatar-large {
+    width: 80px;
+    height: 80px;
+    font-size: 30px;
+  }
+  
+  .avatar-buttons {
+    gap: 6px;
+  }
+  
+  .upload-button,
+  .remove-avatar-button {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+  
+  .upload-loading-text {
+    font-size: 12px;
+  }
+}

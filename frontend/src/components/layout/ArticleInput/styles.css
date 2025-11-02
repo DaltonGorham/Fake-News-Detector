@@ -136,3 +136,122 @@
   width: 18px;
   height: 18px;
 }
+
+@media (max-width: 1024px) {
+  .article-input-content {
+    max-width: 450px;
+  }
+  
+  .article-input-label {
+    font-size: 18px;
+  }
+}
+
+/* Tablet/iPad (1024px - 768px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .article-input-container {
+    padding: 25px;
+  }
+  
+  .article-input-content {
+    max-width: 700px;
+  }
+  
+  .article-input-label {
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+  
+  .article-url-input {
+    font-size: 15px;
+    padding: 14px 50px 14px 16px;
+  }
+  
+  .article-submit-button {
+    width: 38px;
+    height: 38px;
+    right: 8px;
+  }
+  
+  .article-submit-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .article-input-error {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .article-input-container {
+    padding: 15px;
+  }
+  
+  .article-input-content {
+    max-width: 100%;
+  }
+  
+  .article-input-label {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .article-url-input {
+    font-size: 13px;
+    padding: 12px 45px 12px 14px;
+  }
+  
+  .article-input-error {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 640px) {
+  .article-input-container {
+    padding: 10px;
+  }
+  
+  .article-input-label {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  
+  .article-url-input {
+    font-size: 12px;
+    padding: 11px 40px 11px 12px;
+    border-radius: 6px;
+  }
+  
+  .article-submit-button {
+    width: 32px;
+    height: 32px;
+    right: 6px;
+  }
+  
+  .article-submit-button svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .article-input-error {
+    font-size: 12px;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-input-label {
+    font-size: 14px;
+  }
+  
+  .article-url-input {
+    font-size: 11px;
+    padding: 10px 38px 10px 10px;
+  }
+  
+  .article-submit-button {
+    width: 30px;
+    height: 30px;
+  }
+}

@@ -1,0 +1,160 @@
+.analyzing-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  gap: 40px;
+  position: relative;
+}
+
+.pacman-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pacman-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.pacman {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.pacman-top,
+.pacman-bottom {
+  position: absolute;
+  width: 50px;
+  height: 25px;
+  background: #ffcc00;
+  border-radius: 50px 50px 0 0;
+  transform-origin: bottom center;
+}
+
+.pacman-top {
+  top: 0;
+  animation: chomp-top 0.3s infinite;
+}
+
+.pacman-bottom {
+  bottom: 0;
+  border-radius: 0 0 50px 50px;
+  transform-origin: top center;
+  animation: chomp-bottom 0.3s infinite;
+}
+
+@keyframes chomp-top {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-45deg);
+  }
+}
+
+@keyframes chomp-bottom {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(45deg);
+  }
+}
+
+.pellets {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateX(calc(var(--eaten, 0) * -48px));
+  display: flex;
+  gap: 40px;
+  padding-left: 160px;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  z-index: 1;
+}
+
+.pellet {
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.pellet.eaten {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.stage-text {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  text-align: center;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dots-container {
+  width: 100%;
+  max-width: 500px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: #ffcc00;
+  animation: pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
+}

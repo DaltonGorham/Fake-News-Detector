@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { HiUpload, HiX, HiPencil, HiCheck } from 'react-icons/hi';
 import { userApi } from '../../../api/user';
+import { validateUsername } from '../../../util/validator';
 import Loading from '../../common/Loading';
 import './styles.css';
 
@@ -60,8 +61,10 @@ export default function ProfileSettings({ isOpen, onClose, user, profile, refres
       return;
     }
 
-    if (newUsername.trim().length < 3) {
-      setUsernameError('Username must be at least 3 characters');
+    try {
+      validateUsername(newUsername.trim());
+    } catch (error) {
+      setUsernameError(error.message);
       return;
     }
 

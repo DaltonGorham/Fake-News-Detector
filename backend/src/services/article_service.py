@@ -6,6 +6,32 @@ from ..repository import article_repository
 class ArticleService:
     vectorizer = None
     model = None
+    
+    # List of known satirical/parody news sites
+    SATIRICAL_DOMAINS = {
+        'theonion.com',
+        'clickhole.com',
+        'reductress.com',
+        'thedailymash.co.uk',
+        'thebeaverton.com',
+        'borowitz-report.com',
+        'newsthump.com',
+        'waterfordwhispersnews.com',
+        'babylonbee.com',
+        'theneedling.com',
+        'theshovel.com.au',
+        'theheraldsun.com.au',
+        'private-eye.co.uk',
+        'thespoof.com',
+        'satirewire.com',
+        'nationalreport.net',
+        'empirenews.net',
+        'huzlers.com',
+        'worldnewsdailyreport.com',
+        'newsbiscuit.com',
+        'southendnewsnetwork.net',
+        'thesardonian.com'
+    }
 
     @staticmethod
     def get_article_history(user_id: str, user_jwt: str = None):
@@ -96,6 +122,10 @@ class ArticleService:
         try:
             article = ArticleService.pull_article(url)
             current_time = datetime.now().isoformat()
+            
+            # Check if the source is from a known satirical site
+            is_satire = article["source"] in ArticleService.SATIRICAL_DOMAINS
+            
             ai_result = ArticleService.ai_analysis(article)
 
             truthness_label = ""
@@ -120,10 +150,11 @@ class ArticleService:
                 "created_at": current_time,
                 "article": article,
                 "ai_result": {
-                    "genre" : genre,
+                    "genre" : genre if not is_satire else "Satire",
                     "truthness_label": truthness_label,
                     "truthness_score": truthness_score,
-                    "related_articles": []
+                    "related_articles": [],
+                    "is_satire": is_satire
                 }
             }
 

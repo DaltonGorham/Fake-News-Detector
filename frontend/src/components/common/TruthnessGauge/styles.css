@@ -1,27 +1,89 @@
 .truthness-gauge {
   width: 100%;
-  max-width: 300px;
+  max-width: 240px;
   margin: 0 auto;
-  padding: 10px 20px 20px;
+  padding: 8px 16px 12px;
 }
 
 .gauge-content {
   text-align: center;
-  margin-top: -30px;
+  margin-top: -20px;
 }
 
 .gauge-score {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 700;
   color: #e0e0e0;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .gauge-label {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
+  letter-spacing: 1px;
   color: #e0e0e0;
+}
+
+/* Tablet/iPad (1024px - 768px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .truthness-gauge {
+    max-width: 280px;
+    padding: 10px 20px 16px;
+  }
+  
+  .gauge-score {
+    font-size: 34px;
+  }
+  
+  .gauge-label {
+    font-size: 15px;
+  }
+}
+
+/* Mobile (640px and below) */
+@media (max-width: 640px) {
+  .truthness-gauge {
+    max-width: 180px;
+    padding: 6px 0 8px;
+    margin: 0 auto;
+  }
+  
+  .gauge-content {
+    margin-top: -15px;
+  }
+  
+  .gauge-score {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  
+  .gauge-label {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* Small mobile (480px and below) */
+@media (max-width: 480px) {
+  .truthness-gauge {
+    max-width: 160px;
+    padding: 5px 0 6px;
+    margin: 0 auto;
+  }
+  
+  .gauge-content {
+    margin-top: -12px;
+  }
+  
+  .gauge-score {
+    font-size: 20px;
+    margin-bottom: 3px;
+  }
+  
+  .gauge-label {
+    font-size: 9px;
+    letter-spacing: 0.3px;
+  }
 }

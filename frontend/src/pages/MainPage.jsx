@@ -14,7 +14,7 @@ export default function MainPage() {
         onHistoryChange={refreshHistory}
       />
       <div className="content-wrapper">
-        <ArticleInput onArticleSubmitted={refreshHistory} />
+        <ArticleInput onArticleSubmitted={refreshHistory} history={history} />
       </div>
     </div>
   );
