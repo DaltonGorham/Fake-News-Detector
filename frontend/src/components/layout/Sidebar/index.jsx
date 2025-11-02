@@ -20,7 +20,7 @@ export default function Sidebar({ history, isLoading, error, onHistoryChange }) 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
       <button 
-        className="sidebar-toggle" 
+        className="sidebar-toggle"
         onClick={toggleSidebar}
         aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
       >
