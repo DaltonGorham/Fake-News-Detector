@@ -40,3 +40,40 @@
   font-size: 14px;
   font-weight: 400;
 }
+
+@media (max-width: 768px) {
+  .user-button {
+    padding: 14px 10px;
+    gap: 10px;
+  }
+  
+  .username {
+    font-size: 14px;
+  }
+  
+  .username-short {
+    font-size: 16px;
+  }
+  
+  .username-long {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .user-button {
+    padding: 12px 10px;
+  }
+  
+  .username {
+    font-size: 13px;
+  }
+  
+  .username-short {
+    font-size: 15px;
+  }
+  
+  .username-long {
+    font-size: 11px;
+  }
+}

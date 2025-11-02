@@ -161,3 +161,154 @@
   background: #4662d9;
   transform: translateY(-2px) scale(1.03);
 }
+
+/* Tablet/iPad (1024px - 768px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .modal {
+    min-width: 450px;
+    max-width: 520px;
+    padding: 36px 28px;
+  }
+
+  .modal input {
+    padding: 14px 16px;
+    font-size: 1.05rem;
+  }
+
+  .password-input-wrapper input {
+    padding-right: 46px;
+  }
+
+  .toggle-password {
+    right: 14px;
+    font-size: 1.35rem;
+  }
+
+  .input-hint {
+    font-size: 0.8rem;
+  }
+
+  .strength-label {
+    font-size: 0.95rem;
+  }
+
+  .modal button {
+    padding: 14px 0;
+    font-size: 1.05rem;
+  }
+}
+
+/* Mobile (640px and below) */
+@media (max-width: 640px) {
+  .modal {
+    min-width: 300px;
+    max-width: 360px;
+    padding: 24px 18px;
+  }
+
+  .input-group {
+    margin: 10px 0;
+  }
+
+  .modal input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .password-input-wrapper input {
+    padding-right: 40px;
+  }
+
+  .toggle-password {
+    right: 10px;
+    font-size: 1.1rem;
+  }
+
+  .input-group .error-message {
+    font-size: 0.8rem;
+  }
+
+  .input-hint {
+    font-size: 0.7rem;
+  }
+
+  .strength-bar {
+    height: 3px;
+  }
+
+  .strength-label {
+    font-size: 0.8rem;
+  }
+
+  .modal-buttons {
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .modal button {
+    padding: 10px 0;
+    font-size: 0.9rem;
+  }
+}
+
+/* Small mobile (480px and below) */
+@media (max-width: 480px) {
+  .modal-backdrop {
+    padding-bottom: 3vh;
+  }
+
+  .modal {
+    min-width: 280px;
+    max-width: 320px;
+    padding: 20px 14px;
+  }
+
+  .input-group {
+    margin: 8px 0;
+  }
+
+  .modal input {
+    padding: 9px 11px;
+    font-size: 0.85rem;
+  }
+
+  .password-input-wrapper input {
+    padding-right: 38px;
+  }
+
+  .toggle-password {
+    right: 9px;
+    font-size: 1rem;
+  }
+
+  .input-group .error-message {
+    font-size: 0.75rem;
+  }
+
+  .input-hint {
+    font-size: 0.65rem;
+  }
+
+  .password-strength {
+    margin-top: 6px;
+  }
+
+  .strength-bar {
+    height: 3px;
+    margin-bottom: 3px;
+  }
+
+  .strength-label {
+    font-size: 0.75rem;
+  }
+
+  .modal-buttons {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .modal button {
+    padding: 9px 0;
+    font-size: 0.85rem;
+  }
+}
