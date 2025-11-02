@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { supabase } from "./lib/supabaseClient.js";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
@@ -73,6 +74,7 @@ export default function App() {
     <BrowserRouter>
       <AppRoutes />
       <Analytics />
+      <SpeedInsights />
     </BrowserRouter>
   );
 }
