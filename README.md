@@ -1,77 +1,112 @@
 # Fake News Detector
 
-A tool that checks if news articles might be fake. Paste a URL, get an analysis.
+An application that analyzes news articles for credibility. Users can submit article URLs, get credibility scores, and track their analysis history.
 
-## Getting Started
+Live at: https://articleverify.net
 
-First time setup:
+## Quick Start
+
+Clone and set up:
 ```bash
-# Get the code
 git clone https://github.com/DaltonGorham/fake-news-detector.git
 cd fake-news-detector
 
-# Frontend
+# Frontend setup
 cd frontend
 npm install
 npm run dev
 
-# Backend
+# Backend setup
 cd ../backend
 pip install -r requirements.txt
 python -m uvicorn src.main:app --reload
 ```
 
+The frontend runs at `http://localhost:5173` and the backend at `http://localhost:8000`.
+
 ## What It Does
 
-Put in a news article URL and the app will:
-- Check if it seems reliable
-- Show you a trust score
-- Save it to your history
+This app analyzes news articles for potential misinformation:
+- Submit any article URL for analysis
+- Get a credibility score and classification
+- View detailed analysis results
+- Track your article history
+- User authentication and profiles
 
-## How It's Built
+## Tech Stack
 
-Frontend:
-- React for the UI (hosted on Vercel)
-- Vite for development
-- Supabase for user accounts
+**Frontend**
+- React with Vite
+- Deployed on Vercel
+- Supabase for authentication
+- Vitest for testing (152 tests)
 
-Backend:
-- FastAPI server (hosted on Render)
+**Backend**
+- FastAPI server
+- Deployed on Railway
 - Custom ML model for article analysis
-- Supabase for the database
+- Supabase for database
 
-## File Layout
+**CI/CD**
+- GitHub Actions for automated testing
+- Automated deployments to Vercel and Railway
+- Test coverage reports
+
+## Project Structure
 
 ```
-├── frontend/    # All the React stuff
-├── backend/     # Server code
-└── docs/        # Extra documentation
+├── frontend/       # React application
+├── backend/        # FastAPI server
+├── docs/           # Documentation
+└── .github/        # CI/CD workflows
 ```
 
-Want more details? Check:
-- [Frontend details](frontend/README.md)
-- [Backend details](backend/README.md)
+See the individual READMEs for more details:
+- [Frontend README](frontend/README.md)
+- [Backend README](backend/README.md)
+- [Testing Documentation](frontend/TESTING.md)
 
-## API Basics
+## API Overview
 
-Here's what you can do:
+The backend provides these main endpoints:
 
-```bash
-# Check an article
-POST /api/v1/analyze
-{"url": "https://example.com/article"}
-
-# See your history
-GET /api/v1/user/history
-
-# Look up a specific analysis
-GET /api/v1/results/{id}
+```
+POST   /api/v1/articles/analyze     # Analyze an article
+GET    /api/v1/articles/history     # Get user's analysis history
+GET    /api/v1/articles/{id}        # Get specific analysis
+GET    /api/v1/user/profile         # Get user profile
+PUT    /api/v1/user/profile         # Update user profile
 ```
 
-## Setting Up for Development
+## Development Setup
 
-1. Copy `.env.example` to `.env`
-2. Add your Supabase details
-3. Start frontend and backend (see commands above)
-4. Open `http://localhost:5173`
+1. Set up environment variables:
+   - Copy `.env.example` to `.env` in both frontend and backend
+   - Add your Supabase credentials
+   - Add any other required API keys
+
+2. Install dependencies and run:
+   ```bash
+   # Frontend
+   cd frontend && npm install && npm run dev
+   
+   # Backend
+   cd backend && pip install -r requirements.txt && uvicorn src.main:app --reload
+   ```
+
+3. Run tests:
+   ```bash
+   cd frontend
+   npm test              # Run tests in watch mode
+   npm run test:coverage # Generate coverage report
+   ```
+
+## Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Run tests to make sure everything passes
+4. Push and create a pull request
+
+The CI/CD pipeline will automatically run tests on your PR.
 

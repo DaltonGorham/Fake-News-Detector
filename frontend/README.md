@@ -1,143 +1,141 @@
-# Fake News Detector Frontend
+# Fake News Detector - Frontend
 
-React app for analyzing articles and detecting potential fake news. Built with Vite and uses Supabase for auth.
+React application for analyzing news articles and detecting potential misinformation. Users can submit articles, view credibility scores, and manage their analysis history.
 
-## Quick Start
+Live at: https://articleverify.net
+
+## Getting Started
 
 ```bash
 # Install dependencies
 npm install
 
-# Start dev server
+# Start development server
 npm run dev
+
+# Run tests
+npm test
+
+# Generate coverage report
+npm run test:coverage
 
 # Build for production
 npm run build
 ```
+
+## Testing
+
+This project has comprehensive test coverage using Vitest and React Testing Library. We have 152 tests covering all major components.
+
+Run tests:
+```bash
+npm test              # Watch mode
+npm run test:ui       # Visual test UI
+npm run test:coverage # Coverage report
+```
+
+See [TESTING.md](./TESTING.md) for detailed testing documentation.
 
 ## Project Structure
 
 ```
 frontend/
 ├── src/
-│   ├── api/                 # API communication layer
-│   │   ├── index.js        # API exports 
-│   │   ├── client.js       # Base API client configuration
-│   │   └── articles.js     # Article-specific API endpoints
+│   ├── api/                 # API client and endpoints
+│   │   ├── client.js        # Base HTTP client
+│   │   ├── articles.js      # Article endpoints
+│   │   └── user.js          # User endpoints
 │   │
-│   ├── components/         # UI Components
-│   │   ├── auth/          # Authentication related components
-│   │   ├── common/        # Shared/reusable components
-│   │   └── layout/        # Layout and structural components
+│   ├── components/          # React components
+│   │   ├── auth/           # Authentication components
+│   │   ├── common/         # Reusable UI components
+│   │   └── layout/         # Page layout components
 │   │
-│   ├── hooks/             # Custom React hooks
-│   │   └── article/       # Article-related hooks
+│   ├── hooks/              # Custom React hooks
+│   │   ├── useAuth.js
+│   │   ├── useProfile.js
+│   │   └── article/        # Article-specific hooks
 │   │
-│   ├── lib/              # Library configurations
+│   ├── lib/                # Third-party library configs
 │   │   └── supabaseClient.js
 │   │
-│   ├── pages/            # Page components
-│   ├── styles/           # Global styles
-│   └── util/             # Utility functions
+│   ├── pages/              # Page components
+│   │   ├── LoginPage.jsx
+│   │   ├── MainPage.jsx
+│   │   └── VerifyEmail.jsx
+│   │
+│   ├── styles/             # Component styles
+│   ├── util/               # Helper functions
+│   └── test/               # Test configuration
+│       └── setup.js        # Vitest setup
+│
+└── coverage/               # Test coverage reports
 ```
 
-## Architecture Design
-
-### How It Works
-
-The app is built with a few simple pieces:
-
-#### Base Client (`client.js`)
-```javascript
-const apiClient = async (endpoint, options) => {
-  // 1. Handles authentication headers from Supabase
-  // 2. Manages common request configurations
-  // 3. Processes responses
-  // 4. Returns consistent { data, error } structure
-}
-```
-
-#### Feature-Specific APIs (`articles.js`)
-Currently implemented with mock data for development:
-```javascript
-const articleApi = {
-  analyzeArticle: async (url) => {
-    // Returns mock analysis data
-    return {
-      data: {
-        id: "123",
-        credibility_score: 0.85,
-        classification: "reliable"
-      },
-      error: null
-    };
-  }
-}
-```
-
-#### API Barrel File (`index.js`)
-Provides clean imports throughout the application:
-```javascript
-export { apiClient } from './client';
-export { articleApi } from './articles';
-```
 
 ### Components
 
-Components are grouped by feature to keep things organized:
+Components are organized by feature:
 
-- `auth/` - Login and signup stuff
-- `common/` - Reusable components like loading spinners
-- `layout/` - Main page layout components
+**auth/** - Authentication flows
+- EmailVerification
+- SignupModal
 
-Each component has its own CSS file right next to it to make styling easier:
+**common/** - Reusable UI components
+- Loading spinner
+- UserAvatar
+- TruthnessGauge
+- AnalyzingAnimation
+- ConfirmModal
 
-```
-components/
-└── auth/
-    └── LoginForm/
-        ├── index.jsx
-        └── styles.css
-```
+**layout/** - Main application layout
+- ArticleInput
+- ArticleDetails
+- ProfileSettings
+- Sidebar
+- UserMenu
+
+Each component includes its own CSS file for styling.
 
 ### Custom Hooks
 
-The complex stuff is handled in hooks. For example, article submission looks like:
+Hooks encapsulate complex logic and state management:
 
-```javascript
-const useArticleSubmission = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+**useAuth** - Authentication state and actions
+**useProfile** - User profile data and updates
+**article/useArticleSubmission** - Article submission logic
+**article/useAnalysisPolling** - Polling for analysis results
 
-  const submitArticle = async (url) => {
-    // Handle submission
-  };
+### State Management
 
-  return { loading, error, submitArticle };
-};
+The app uses React's built-in state management:
+- Component state for UI interactions
+- Context for global auth state
+- Custom hooks for shared logic
+- Local storage for caching
+
+## Environment Variables
+
+Required variables (create a `.env` file):
+
+```
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_key
+VITE_API_BASE_URL=your_backend_url
 ```
 
-### Error Handling
+## Deployment
 
-All API calls return either data or an error:
-```javascript
-const { data, error } = await articleApi.analyze(url);
-if (error) {
-  // Show error message
-}
-```
+The frontend is deployed on Vercel with automatic deployments:
+- Push to `main` triggers production deployment
+- Push to `develop` triggers preview deployment
+- Pull requests create preview deployments
+- Tests must pass before deployment
 
 ## Development Notes
 
-Right now:
-- API calls return mock data
-- Added small delays to test loading states
-- Error handling is ready for real API
-- Components are set up for real data
-
-## TODO
-
-When the backend is ready:
-1. Remove mock data in `articles.js`
-2. Point to real API endpoints
-3. Test everything works
+- The app uses Vite for fast development and building
+- All API calls return consistent `{ data, error }` objects
+- Components are tested with Vitest and React Testing Library
+- Authentication is handled through Supabase
+- Article analysis results are cached for better performance
