@@ -1,1 +1,5 @@
 .env
+
+# Test coverage
+frontend/coverage/
+coverage/

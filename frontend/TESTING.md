@@ -18,6 +18,7 @@ npm run test:coverage
 
 ## Writing More Tests
 
+When adding a new feat please also write a test for it like so: 
 Create test files next to your components with `.test.jsx` extension:
 
 ```jsx
@@ -41,7 +42,7 @@ describe('MyComponent', () => {
 });
 ```
 
-## Useful Testing Utilities
+## Testing Utilities that we can use
 
 - `screen.getByRole()` - Find by ARIA role 
 - `screen.getByText()` - Find by text content
@@ -60,3 +61,9 @@ npm run test:coverage
 ```
 
 Open `coverage/index.html` in your browser to see detailed coverage report.
+
+Make sure to add this to your .gitignore if ran
+```
+frontend/coverage/
+coverage/
+```

@@ -15,8 +15,12 @@ on:
       - 'frontend/**'
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   deploy-production:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
     runs-on: ubuntu-latest
     environment: production-frontend
 
@@ -35,6 +39,7 @@ jobs:
 
   deploy-preview:
     if: (github.event_name == 'push' && github.ref == 'refs/heads/develop') || github.event_name == 'pull_request'
+    needs: test
     runs-on: ubuntu-latest
     environment: preview-frontend
 
