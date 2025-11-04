@@ -120,13 +120,6 @@ Key dependencies:
 - **scikit-learn** - Machine learning
 - **lxml** - HTML parsing
 
-## Deployment
-
-The backend is deployed on Railway:
-- Automatic deployment on push to `main`
-- Environment variables configured in Railway dashboard
-- Health checks ensure service availability
-
 ## Development Notes
 
 - The API uses CORS middleware to allow requests from the frontend
