@@ -8,6 +8,12 @@ from httpx import AsyncClient
 BASE_URL = os.getenv("API_BASE_URL", "https://fake-news-detector-dev-prod.onrender.com")
 LOCALHOST_ORIGIN = "http://localhost:5173"
 
+# Skip performance tests in CI/CD since they require a live server
+pytestmark = pytest.mark.skipif(
+    os.getenv("TESTING") == "true",
+    reason="Performance tests require live server"
+)
+
 
 @pytest.fixture
 async def http_client():
