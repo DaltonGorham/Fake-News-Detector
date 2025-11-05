@@ -43,13 +43,13 @@ This app analyzes news articles for potential misinformation:
 
 **Backend**
 - FastAPI server
-- Deployed on Railway
+- Deployed on Render
 - Custom ML model for article analysis
 - Supabase for database
 
 **CI/CD**
 - GitHub Actions for automated testing
-- Automated deployments to Vercel and Railway
+- Automated deployments to Vercel and Render
 - Test coverage reports
 
 ## Project Structure
