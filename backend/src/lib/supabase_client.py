@@ -14,7 +14,11 @@ def get_supabase_client(user_jwt: str = None) -> Client:
     
     return client
 
-supabase_admin_client = create_client(
-    settings.SUPABASE_URL,
-    settings.SUPABASE_SERVICE_ROLE_KEY
-)
+# Initialize admin client only if not in testing mode
+if settings.TESTING:
+    supabase_admin_client = None
+else:
+    supabase_admin_client = create_client(
+        settings.SUPABASE_URL,
+        settings.SUPABASE_SERVICE_ROLE_KEY
+    )
