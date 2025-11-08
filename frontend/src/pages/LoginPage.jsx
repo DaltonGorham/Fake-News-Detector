@@ -55,7 +55,7 @@ export default function LoginPage() {
   return (
     <div id="login-container">
       <div id="logo-container">
-        <img src="/logo.png" id="logo" alt="Fake-News Logo" />
+        <img src="/article-verify-logo.png" id="logo" alt="Fake-News Logo" />
       </div>
       <div id="login-box">
         {pendingEmailVerification ? (

@@ -3,6 +3,7 @@
   width: 280px;
   min-width: 280px; 
   height: 100vh;
+  height: 100dvh;
   background-color: #202123;
   display: flex;
   flex-direction: column;
