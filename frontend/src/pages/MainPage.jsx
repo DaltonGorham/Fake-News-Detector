@@ -1,5 +1,6 @@
 import ArticleInput from '../components/layout/ArticleInput';
 import Sidebar from '../components/layout/Sidebar';
+import AiDisclaimer from '../components/layout/AiDisclaimer';
 import '../styles/MainPage.css';
 import { useArticleHistory } from '../hooks/article/useArticleHistory';
 
@@ -15,6 +16,7 @@ export default function MainPage() {
       />
       <div className="content-wrapper">
         <ArticleInput onArticleSubmitted={refreshHistory} history={history} />
+        <AiDisclaimer />
       </div>
     </div>
   );
