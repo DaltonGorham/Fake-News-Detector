@@ -1,5 +1,5 @@
 import UserAvatar from '../../common/UserAvatar';
-import './UserButton.styles.css';
+import './UserButton.css';
 
 export default function UserButton({ profile, user, onClick }) {
   const displayName = profile?.username || 'Your Account';

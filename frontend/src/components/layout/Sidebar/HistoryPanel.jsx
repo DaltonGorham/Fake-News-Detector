@@ -58,7 +58,7 @@ export default function HistoryPanel({ history, isLoading, error, onHistoryChang
 
     filtered.sort((a, b) => {
       if (sortBy === 'date') {
-        return new Date(b.created_at) - new Date(a.created_at);
+        return b.history_index - a.history_index;
       } else if (sortBy === 'score') {
         const scoreA = a.article?.ai_result?.[0]?.truthness_score || 0;
         const scoreB = b.article?.ai_result?.[0]?.truthness_score || 0;
