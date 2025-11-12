@@ -1,0 +1,174 @@
+.forgot-password-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #e1e8ed;
+}
+
+.forgot-password-container h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+}
+
+.forgot-password-description {
+  font-size: 15px;
+  color: rgba(225, 232, 237, 0.7);
+  margin-bottom: 24px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.forgot-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  text-align: center;
+}
+
+.form-group input {
+  background: #2a2b32;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4c6ef5;
+}
+
+.form-group input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #dc3545;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.success-message {
+  color: #4ade80;
+  padding: 12px 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.reset-button {
+  width: 100%;
+  padding: 12px 24px;
+  background: #4a5568;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+}
+
+.reset-button:hover:not(:disabled) {
+  background: #5a6578;
+}
+
+.reset-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.back-to-login-button {
+  width: 100%;
+  padding: 12px 24px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-to-login-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.back-to-login-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .forgot-password-container {
+    padding: 16px;
+  }
+
+  .forgot-password-container h2 {
+    font-size: 24px;
+  }
+
+  .forgot-password-description {
+    font-size: 14px;
+  }
+
+  .form-group input {
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+
+  .reset-button,
+  .back-to-login-button {
+    font-size: 15px;
+    padding: 10px 20px;
+    min-height: 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .forgot-password-container h2 {
+    font-size: 22px;
+  }
+
+  .forgot-password-description {
+    font-size: 13px;
+  }
+
+  .form-group input {
+    font-size: 14px;
+  }
+
+  .reset-button,
+  .back-to-login-button {
+    font-size: 14px;
+  }
+}

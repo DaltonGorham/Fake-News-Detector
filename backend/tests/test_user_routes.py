@@ -63,3 +63,34 @@ class TestUserRoutes:
             )
             
             assert response.status_code == 500
+    
+    def test_delete_account_success(self):
+        with patch('src.routes.user_routes.user_service.delete_account') as mock_delete:
+            mock_delete.return_value = None
+            response = client.delete(
+                "/api/v1/users/account",
+                headers={"Authorization": "Bearer fake_token"}
+            )
+            
+            assert response.status_code == 200
+            assert response.json()["data"] is None
+            assert response.json()["error"] is None
+            mock_delete.assert_called_once_with("test_user_id", "fake_jwt_token")
+    
+    def test_delete_account_unauthorized(self):
+        app.dependency_overrides.clear()
+        response = client.delete("/api/v1/users/account")
+        assert response.status_code == 403
+        app.dependency_overrides[auth_handler.get_user_with_token] = mock_get_user_with_token
+        app.dependency_overrides[auth_handler.get_current_user] = mock_get_current_user
+    
+    def test_delete_account_service_error(self):
+        with patch('src.routes.user_routes.user_service.delete_account') as mock_delete:
+            mock_delete.side_effect = Exception("Auth error")
+            response = client.delete(
+                "/api/v1/users/account",
+                headers={"Authorization": "Bearer fake_token"}
+            )
+            
+            assert response.status_code == 500
+            assert "Failed to delete account" in response.json()["detail"]["message"]

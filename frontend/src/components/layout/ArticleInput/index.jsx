@@ -2,9 +2,9 @@ import React from 'react';
 import { useArticleSubmission } from '../../../hooks/article/useArticleSubmission';
 import { HiArrowRight } from 'react-icons/hi';
 import AnalyzingAnimation from '../../common/AnalyzingAnimation';
-import { useAuth } from '../../../hooks/useAuth';
-import { useProfile } from '../../../hooks/useProfile';
-import { useWelcomeMessage } from '../../../hooks/useWelcomeMessage';
+import { useAuth } from '../../../hooks/auth/useAuth';
+import { useProfile } from '../../../hooks/user/useProfile';
+import { useWelcomeMessage } from '../../../hooks/ui/useWelcomeMessage';
 import './styles.css';
 
 export default function ArticleInput({ onArticleSubmitted, history = [] }) {

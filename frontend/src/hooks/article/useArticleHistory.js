@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../useAuth';
+import { useAuth } from '../auth/useAuth';
 import { apiClient } from '../../api/client';
 import { createCache, cachedFetch, resetCache } from '../../util/cacheManager.js';
 

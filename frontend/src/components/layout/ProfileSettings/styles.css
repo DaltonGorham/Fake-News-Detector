@@ -68,7 +68,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 10px;
 }
 
 .avatar-upload {
@@ -197,6 +197,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 12px;
 }
 
 .username-input {
@@ -285,6 +286,157 @@
   margin-top: 8px;
   text-align: center;
   display: block;
+}
+
+.account-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.change-password-button {
+  width: 100%;
+  padding: 12px 16px;
+  background: #4a5568;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.change-password-button:hover {
+  background: #5a6578;
+}
+
+.password-change-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.password-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.password-input-group label {
+  color: #fff;
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.password-input {
+  background: #2a2b32;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 16px;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: #4c6ef5;
+}
+
+.password-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.password-error {
+  color: #dc3545;
+  font-size: 14px;
+  text-align: center;
+}
+
+.password-success {
+  color: #4ade80;
+  font-size: 14px;
+  margin-top: 8px;
+  display: block;
+  text-align: center;
+}
+
+.password-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.password-save-button,
+.password-cancel-button {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+}
+
+.password-save-button {
+  background: #4a5568;
+}
+
+.password-save-button:hover:not(:disabled) {
+  background: #5a6578;
+}
+
+.password-save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.password-cancel-button {
+  background: #3a3b40;
+}
+
+.password-cancel-button:hover:not(:disabled) {
+  background: #4a4b50;
+}
+
+.delete-account-button {
+  width: 100%;
+  padding: 12px 16px;
+  background: #dc3545;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.delete-account-button:hover:not(:disabled) {
+  background: #c82333;
+}
+
+.delete-account-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Tablet/iPad (1024px - 768px) */

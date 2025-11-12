@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaQuestionCircle } from 'react-icons/fa';
+import { FaQuestionCircle, FaLightbulb, FaBug } from 'react-icons/fa';
 import './styles.css';
 
 export default function AiDisclaimer() {
@@ -41,6 +41,42 @@ export default function AiDisclaimer() {
                         <button className="ai-disclaimer-close-button" onClick={() => setIsOpen(false)}>
                             Got It
                         </button>
+                        <div className="ai-disclaimer-footer">
+                            <h3>Help Us Improve</h3>
+                            <p>Your feedback helps make this tool better for everyone.</p>
+                            <div className="footer-actions">
+                                <a 
+                                    href="mailto:suggestions@articleverify.net" 
+                                    className="footer-action-link"
+                                    aria-label="Email for suggestions"
+                                >
+                                    <div className="footer-action-card">
+                                        <span className="action-icon">
+                                            <FaLightbulb />
+                                        </span>
+                                        <div className="action-text">
+                                            <h4>Suggestions</h4>
+                                            <p>Share your ideas</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a 
+                                    href="mailto:bugs@articleverify.net" 
+                                    className="footer-action-link"
+                                    aria-label="Email to report bugs"
+                                >
+                                    <div className="footer-action-card">
+                                        <span className="action-icon">
+                                            <FaBug />
+                                        </span>
+                                        <div className="action-text">
+                                            <h4>Report a Bug</h4>
+                                            <p>Help us fix issues</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

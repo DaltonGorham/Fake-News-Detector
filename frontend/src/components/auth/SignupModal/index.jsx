@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { validateEmail, validatePassword, validateUsername, getPasswordStrength } from '../../../util/validator';
-import { HiEye, HiEyeOff } from 'react-icons/hi';
+import { validateEmail, validatePassword, validateUsername } from '../../../util/validator';
+import PasswordInput from '../../common/PasswordInput';
 import './styles.css';
 
 export default function SignupModal({ onClose, onSignup, status }) {
@@ -10,9 +10,6 @@ export default function SignupModal({ onClose, onSignup, status }) {
     username: ''
   });
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
-
-  const passwordStrength = getPasswordStrength(formData.password);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,42 +89,16 @@ export default function SignupModal({ onClose, onSignup, status }) {
         </div>
 
         <div className="input-group">
-          <div className="password-input-wrapper">
-            <input
-              name="password"
-              placeholder="Password"
-              type={showPassword ? "text" : "password"}
-              value={formData.password}
-              onChange={handleChange}
-              className={errors.password ? 'error' : ''}
-            />
-            <button
-              type="button"
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              {showPassword ? <HiEyeOff /> : <HiEye />}
-            </button>
-          </div>
+          <PasswordInput
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+            showStrength={true}
+            error={errors.password}
+          />
           {errors.password && (
             <span className="error-message">{errors.password}</span>
-          )}
-          {formData.password && !errors.password && (
-            <div className="password-strength">
-              <div className="strength-bar">
-                <div 
-                  className="strength-fill" 
-                  style={{ 
-                    width: `${passwordStrength.strength}%`,
-                    backgroundColor: passwordStrength.color
-                  }}
-                />
-              </div>
-              <span className="strength-label" style={{ color: passwordStrength.color }}>
-                {passwordStrength.label}
-              </span>
-            </div>
           )}
           <span className="input-hint">Min 8 characters, uppercase, lowercase, number</span>
         </div>
