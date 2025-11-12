@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
-import { useProfile } from '../../../hooks/useProfile';
+import { useAuth } from '../../../hooks/auth/useAuth';
+import { useProfile } from '../../../hooks/user/useProfile';
 import UserMenu from '../UserMenu';
 import HistoryPanel from './HistoryPanel';
 import UserButton from './UserButton';

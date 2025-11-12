@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import SignupModal from '../components/auth/SignupModal';
 import EmailVerification from '../components/auth/EmailVerification';
-import { useAuth } from '../hooks/useAuth';
+import ForgotPassword from '../components/auth/ForgotPassword';
+import { useAuth } from '../hooks/auth/useAuth';
 import '../styles/LoginPage.css';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const navigate = useNavigate();
   // This is a stupidly unelegant way to handle this but whatever 
   // just use the auth hook for everything i guess
@@ -67,11 +69,19 @@ export default function LoginPage() {
             }}
             onResend={handleResendEmail}
           />
+        ) : showForgotPassword ? (
+          <ForgotPassword 
+            onBack={() => {
+              setStatus('');
+              setShowForgotPassword(false);
+            }}
+          />
         ) : (
           <>
             <h1 className="login-title">Login</h1>
             <input
               id="email"
+              type="text"
               placeholder="Email"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -87,6 +97,12 @@ export default function LoginPage() {
               <button id="login-btn" onClick={handleLogin}>Login</button>
               <button id="signup-btn" onClick={() => setShowSignupModal(true)}>Sign Up</button>
             </div>
+            <button 
+              className="forgot-password-link"
+              onClick={() => setShowForgotPassword(true)}
+            >
+              Forgot Password?
+            </button>
           </>
         )}
         <p id="status">{status}</p>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from './useAuth';
-import { userApi } from '../api/user';
-import { createCache, cachedFetch, resetCache } from '../util/cacheManager.js';
+import { useAuth } from '../auth/useAuth';
+import { userApi } from '../../api/user';
+import { createCache, cachedFetch, resetCache } from '../../util/cacheManager.js';
 
 const profileCache = createCache(null);
 

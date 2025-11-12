@@ -1,19 +1,21 @@
-import { useState, useRef, useEffect } from 'react';
-import { HiUpload, HiX, HiPencil, HiCheck } from 'react-icons/hi';
-import { userApi } from '../../../api/user';
-import { validateUsername } from '../../../util/validator';
+import { useRef } from 'react';
+import { HiUpload, HiX, HiPencil, HiCheck, HiTrash, HiLockClosed } from 'react-icons/hi';
 import Loading from '../../common/Loading';
+import ConfirmModal from '../../common/ConfirmModal';
+import PasswordInput from '../../common/PasswordInput';
+import { useAvatarUpload } from '../../../hooks/user/useAvatarUpload';
+import { useUsernameEdit } from '../../../hooks/user/useUsernameEdit';
+import { usePasswordChange } from '../../../hooks/user/usePasswordChange';
+import { useAccountDeletion } from '../../../hooks/user/useAccountDeletion';
 import './styles.css';
 
 export default function ProfileSettings({ isOpen, onClose, user, profile, refreshProfile }) {
-  const [isUploading, setIsUploading] = useState(false);
-  const [isEditingUsername, setIsEditingUsername] = useState(false);
-  const [newUsername, setNewUsername] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-  const [usernameSuccess, setUsernameSuccess] = useState('');
-  const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
   const fileInputRef = useRef(null);
-  const [uploadMessage, setUploadMessage] = useState('');
+  
+  const avatar = useAvatarUpload(refreshProfile);
+  const username = useUsernameEdit(profile?.username, refreshProfile);
+  const password = usePasswordChange();
+  const accountDeletion = useAccountDeletion();
 
   if (!isOpen) return null;
 
@@ -22,88 +24,13 @@ export default function ProfileSettings({ isOpen, onClose, user, profile, refres
   };
 
   const handleFileChange = async (event) => {
-    try {
-      const file = event.target.files?.[0];
-      if (!file) return;
-
-      setIsUploading(true);
-      
-      const { data, error } = await userApi.uploadAvatar(file);
-
-      if (error) throw new Error(error);
-      
-      await refreshProfile();
-      setUploadMessage('Avatar uploaded successfully');
-    } catch (error) {
-      setUploadMessage(`Failed to upload avatar: ${error.message}`);
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleEditUsername = () => {
-    setNewUsername(profile?.username || '');
-    setUsernameError('');
-    setUsernameSuccess('');
-    setIsEditingUsername(true);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditingUsername(false);
-    setNewUsername('');
-    setUsernameError('');
-    setUsernameSuccess('');
-  };
-
-  const handleSaveUsername = async () => {
-    if (!newUsername.trim()) {
-      setUsernameError('Username cannot be empty');
-      return;
-    }
-
-    try {
-      validateUsername(newUsername.trim());
-    } catch (error) {
-      setUsernameError(error.message);
-      return;
-    }
-
-    if (newUsername.trim() === profile?.username) {
-      setIsEditingUsername(false);
-      return;
-    }
-
-    setIsUpdatingUsername(true);
-    setUsernameError('');
-    setUsernameSuccess('');
-
-    try {
-      const { error } = await userApi.updateProfile({ username: newUsername.trim() });
-      
-      if (error) throw new Error(error);
-      
-      await refreshProfile();
-      setIsEditingUsername(false);
-      setUsernameSuccess('Username updated successfully');
-      setTimeout(() => setUsernameSuccess(''), 3000);
-    } catch (error) {
-      const errorMessage = error.message.toLowerCase();
-      if (errorMessage.includes('duplicate') || 
-          errorMessage.includes('unique') || 
-          errorMessage.includes('already taken') ||
-          errorMessage.includes('database error')) {
-        setUsernameError('Username is already taken');
-      } else {
-        setUsernameError(`Failed to update username: ${error.message}`);
-      }
-    } finally {
-      setIsUpdatingUsername(false);
-    }
+    const file = event.target.files?.[0];
+    await avatar.uploadAvatar(file);
   };
 
   return (
     <div className="profile-settings-overlay">
-      {isUploading && (
+      {(avatar.isUploading || accountDeletion.isDeleting) && (
         <div className="upload-loading-overlay">
           <Loading inline />
         </div>
@@ -141,7 +68,7 @@ export default function ProfileSettings({ isOpen, onClose, user, profile, refres
             <span className="upload-text">
               Click to upload avatar
             </span>
-            <span className="upload-message">{uploadMessage}</span>
+            <span className="upload-message">{avatar.message}</span>
           </div>
 
           <div className="profile-info">
@@ -152,44 +79,44 @@ export default function ProfileSettings({ isOpen, onClose, user, profile, refres
             
             <div className="profile-info-item">
               <label>Username</label>
-              {isEditingUsername ? (
+              {username.isEditing ? (
                 <div className="username-edit-container">
                   <input
                     type="text"
-                    value={newUsername}
-                    onChange={(e) => setNewUsername(e.target.value)}
+                    value={username.value}
+                    onChange={(e) => username.setValue(e.target.value)}
                     className="username-input"
                     placeholder="Enter username"
-                    disabled={isUpdatingUsername}
+                    disabled={username.isLoading}
                     autoFocus
                   />
                   <div className="username-edit-buttons">
                     <button
-                      onClick={handleSaveUsername}
+                      onClick={username.saveUsername}
                       className="username-save-button"
-                      disabled={isUpdatingUsername}
+                      disabled={username.isLoading}
                       aria-label="Save username"
                     >
-                      {isUpdatingUsername ? <Loading inline /> : <HiCheck size={18} />}
+                      {username.isLoading ? <Loading inline /> : <HiCheck size={18} />}
                     </button>
                     <button
-                      onClick={handleCancelEdit}
+                      onClick={username.cancelEdit}
                       className="username-cancel-button"
-                      disabled={isUpdatingUsername}
+                      disabled={username.isLoading}
                       aria-label="Cancel edit"
                     >
                       <HiX size={18} />
                     </button>
                   </div>
-                  {usernameError && (
-                    <span className="username-error">{usernameError}</span>
+                  {username.error && (
+                    <span className="username-error">{username.error}</span>
                   )}
                 </div>
               ) : (
                 <div className="username-display">
                   <span>{profile?.username || 'Not set'}</span>
                   <button
-                    onClick={handleEditUsername}
+                    onClick={username.startEdit}
                     className="username-edit-button"
                     aria-label="Edit username"
                   >
@@ -197,13 +124,94 @@ export default function ProfileSettings({ isOpen, onClose, user, profile, refres
                   </button>
                 </div>
               )}
-              {usernameSuccess && (
-                <span className="username-success">{usernameSuccess}</span>
+              {username.success && (
+                <span className="username-success">{username.success}</span>
               )}
             </div>
           </div>
+
+          <div className="account-actions">
+            {password.isChangingPassword ? (
+              <div className="password-change-form">
+                <div className="password-input-group">
+                  <label>New Password</label>
+                  <PasswordInput
+                    name="newPassword"
+                    value={password.newPassword}
+                    onChange={(e) => password.setNewPassword(e.target.value)}
+                    placeholder="Enter new password"
+                    disabled={password.isLoading}
+                    showStrength={true}
+                  />
+                </div>
+                <div className="password-input-group">
+                  <label>Confirm Password</label>
+                  <PasswordInput
+                    name="confirmPassword"
+                    value={password.confirmPassword}
+                    onChange={(e) => password.setConfirmPassword(e.target.value)}
+                    placeholder="Confirm new password"
+                    disabled={password.isLoading}
+                  />
+                </div>
+                {password.error && (
+                  <span className="password-error">{password.error}</span>
+                )}
+                <div className="password-buttons">
+                  <button
+                    onClick={password.savePassword}
+                    className="password-save-button"
+                    disabled={password.isLoading}
+                  >
+                    {password.isLoading ? <Loading inline /> : 'Update Password'}
+                  </button>
+                  <button
+                    onClick={password.cancelChange}
+                    className="password-cancel-button"
+                    disabled={password.isLoading}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={password.startChange}
+                  className="change-password-button"
+                >
+                  <HiLockClosed size={18} />
+                  Change Password
+                </button>
+                {password.success && (
+                  <span className="password-success">{password.success}</span>
+                )}
+              </>
+            )}
+
+            <button
+              onClick={accountDeletion.requestDeletion}
+              className="delete-account-button"
+              disabled={accountDeletion.isDeleting}
+            >
+              <HiTrash size={18} />
+              Delete Account
+            </button>
+          </div>
         </div>
       </div>
+
+      {accountDeletion.showConfirm && (
+        <ConfirmModal
+          isOpen={accountDeletion.showConfirm}
+          onCancel={accountDeletion.cancelDeletion}
+          onConfirm={accountDeletion.confirmDeletion}
+          title="Delete Account"
+          message="Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted."
+          confirmText="Delete Account"
+          isDangerous={true}
+        />
+      )}
     </div>
   );
 }

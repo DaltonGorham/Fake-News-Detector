@@ -6,27 +6,49 @@ import { supabase } from "./lib/supabaseClient.js";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 import Loading from "./components/common/Loading";
 
 function AppRoutes() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
-  const handleAuthChange = (event, session) => {
-    // Check if we're on verify page or if URL has email verification tokens
-    const isVerifyPage = window.location.pathname === '/verify';
-    const hasVerificationTokens = window.location.hash.includes('access_token') && 
-                                   (window.location.hash.includes('type=signup') || 
-                                    window.location.hash.includes('type=recovery'));
+    const handleAuthChange = (event, session) => {
+
+    const currentPath = window.location.pathname;
+    const isVerifyPage = currentPath === '/verify';
+    const isResetPasswordPage = currentPath === '/reset-password';
+    const isLoginPage = currentPath === '/';
+    
+    // Check for different token types in URL hash
+    const hasAccessToken = window.location.hash.includes('access_token');
+    const isSignupVerification = hasAccessToken && window.location.hash.includes('type=signup');
+    const isPasswordRecovery = hasAccessToken && window.location.hash.includes('type=recovery');
     
     // Don't redirect if we're on the verify page
     if (isVerifyPage) {
       return;
     }
     
-    // If URL has verification tokens, go to verify page instead of dashboard
-    if (hasVerificationTokens) {
+    // Don't redirect if we're on reset password page
+    if (isResetPasswordPage) {
+      return;
+    }
+    
+    // If URL has signup verification tokens, go to verify page
+    if (isSignupVerification) {
       navigate("/verify", { replace: true });
+      return;
+    }
+    
+    // If URL has password recovery tokens, go to reset password page
+    if (isPasswordRecovery) {
+      navigate("/reset-password", { replace: true });
+      return;
+    }
+    
+    // If we get a SIGNED_IN event on login page check if it's from password recovery
+    if (event === 'SIGNED_IN' && isLoginPage && session && !isPasswordRecovery) {
       return;
     }
     
@@ -48,7 +70,7 @@ function AppRoutes() {
       setLoading(false);
     });
 
-    // Listen for changes to auth state (login, logout, etc.)
+    // Listen for changes to auth state
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       handleAuthChange(event, session);
     });
@@ -65,6 +87,7 @@ function AppRoutes() {
       <Route path="/" element={<LoginPage />} />
       <Route path="/dashboard" element={<MainPage />} />
       <Route path="/verify" element={<VerifyEmail />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>
   );
 }

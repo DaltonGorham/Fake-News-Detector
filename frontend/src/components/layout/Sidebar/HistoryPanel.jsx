@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react';
-import { useKeyboardShortcuts } from '../../../hooks/useKeyboardShortcuts';
+import { useKeyboardShortcuts } from '../../../hooks/ui/useKeyboardShortcuts';
 import { articleApi } from '../../../api/articles';
 import ArticleDetails from '../ArticleDetails';
 import ConfirmModal from '../../common/ConfirmModal';
