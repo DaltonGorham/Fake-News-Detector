@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, UploadFile
+from typing import Tuple
 from ..middleware.auth import auth_handler
 from ..services.user_service import UserService
 
@@ -30,6 +31,22 @@ async def upload_avatar(
             status_code=500,
             detail={
                 "message": "Failed to upload avatar",
+                "error": str(e)
+            }
+        )
+
+@router.delete("/users/account")
+async def delete_account(user_data: Tuple[str, str] = Depends(auth_handler.get_user_with_token)):
+    """Delete the current user's account from Supabase Auth"""
+    user_id, user_jwt = user_data
+    try:
+        await user_service.delete_account(user_id, user_jwt)
+        return {"data": None, "error": None}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "message": "Failed to delete account",
                 "error": str(e)
             }
         )

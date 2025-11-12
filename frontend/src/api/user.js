@@ -38,5 +38,27 @@ export const userApi = {
     
     if (error) throw error;
     return { data, error: null };
+  },
+
+  changePassword: async (newPassword) => {
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+    
+    if (error) throw error;
+    return { data, error: null };
+  },
+
+  deleteAccount: async () => {
+    // Backend will clear history, then delete from Auth
+    await apiClient('/api/v1/users/account', {
+      method: 'DELETE'
+    });
+
+    // Sign out the user
+    const { error: signOutError } = await supabase.auth.signOut();
+    if (signOutError) throw signOutError;
+
+    return { data: null, error: null };
   }
 };

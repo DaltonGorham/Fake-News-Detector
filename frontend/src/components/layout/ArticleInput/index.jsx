@@ -2,11 +2,20 @@ import React from 'react';
 import { useArticleSubmission } from '../../../hooks/article/useArticleSubmission';
 import { HiArrowRight } from 'react-icons/hi';
 import AnalyzingAnimation from '../../common/AnalyzingAnimation';
+import { useAuth } from '../../../hooks/auth/useAuth';
+import { useProfile } from '../../../hooks/user/useProfile';
+import { useWelcomeMessage } from '../../../hooks/ui/useWelcomeMessage';
 import './styles.css';
 
 export default function ArticleInput({ onArticleSubmitted, history = [] }) {
+  const { user } = useAuth();
+  const { profile } = useProfile();
+  const { showWelcome, welcomeText, hideWelcome } = useWelcomeMessage(user);
+  
   const { url, setUrl, loading, error, handleSubmit } = useArticleSubmission(() => {
     onArticleSubmitted();
+    // Hide welcome message after first submission
+    hideWelcome();
   }, history);
 
   const handleKeyPress = (e) => {
@@ -22,6 +31,12 @@ export default function ArticleInput({ onArticleSubmitted, history = [] }) {
           <AnalyzingAnimation />
         ) : (
           <>
+            {showWelcome && user && profile?.username && (
+              <div className="welcome-message">
+                {welcomeText}, {profile.username}!
+              </div>
+            )}
+            
             <label className="article-input-label">
               Paste your article's url below:
             </label>

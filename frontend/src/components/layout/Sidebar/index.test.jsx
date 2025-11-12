@@ -13,14 +13,14 @@ vi.mock('../../../lib/supabaseClient', () => ({
 }));
 
 // Mock the hooks
-vi.mock('../../../hooks/useAuth', () => ({
+vi.mock('../../../hooks/auth/useAuth', () => ({
   useAuth: vi.fn(() => ({
     user: { email: 'test@example.com' },
     logout: vi.fn()
   }))
 }));
 
-vi.mock('../../../hooks/useProfile', () => ({
+vi.mock('../../../hooks/user/useProfile', () => ({
   useProfile: vi.fn(() => ({
     profile: { username: 'testuser' },
     refreshProfile: vi.fn()

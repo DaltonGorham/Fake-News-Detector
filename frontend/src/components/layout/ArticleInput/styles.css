@@ -9,6 +9,18 @@
 .article-input-content {
   width: 100%;
   max-width: 500px;
+  position: relative;
+}
+
+.welcome-message {
+  position: absolute;
+  top: -80px;
+  left: 0;
+  right: 0;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .article-input-label {
@@ -192,6 +204,11 @@
     max-width: 100%;
   }
   
+  .welcome-message {
+    top: -65px;
+    font-size: 20px;
+  }
+  
   .article-input-label {
     font-size: 16px;
     margin-bottom: 10px;
@@ -210,6 +227,11 @@
 @media (max-width: 640px) {
   .article-input-container {
     padding: 10px;
+  }
+  
+  .welcome-message {
+    top: -60px;
+    font-size: 18px;
   }
   
   .article-input-label {

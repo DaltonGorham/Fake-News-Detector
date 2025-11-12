@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { supabase } from '../lib/supabaseClient.js';
-import { validateEmail, validatePassword, validateUsername } from '../util/validator.js';
-import { getRedirectURL, formatAuthError } from '../util/authUtils.js';
-import { createCache, cachedFetch, resetCache } from '../util/cacheManager.js';
+import { supabase } from '../../lib/supabaseClient.js';
+import { validateEmail, validatePassword, validateUsername } from '../../util/validator.js';
+import { getRedirectURL, formatAuthError } from '../../util/authUtils.js';
+import { createCache, cachedFetch, resetCache } from '../../util/cacheManager.js';
 
 const userCache = createCache(null);
 
